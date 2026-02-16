@@ -1,0 +1,21 @@
+# build.yaml - Configuration for build_runner
+# https://pub.dev/packages/build_config
+
+targets:
+  $default:
+    builders:
+      zorphy:
+        enabled: true
+        generate_for:
+          include:
+            - lib/src/domain/entities/**/*.dart
+          exclude:
+            - lib/src/domain/entities/enums/*.dart
+
+builders:
+  zorphy:
+    import: "package:zorphy/builder.dart"
+    builder_factories: ["zorphyBuilder"]
+    build_extensions: { ".dart": [".zorphy.dart", ".g.dart"] }
+    auto_apply: dependents
+    build_to: source

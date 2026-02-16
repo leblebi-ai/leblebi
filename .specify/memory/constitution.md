@@ -1,15 +1,15 @@
 <!--
 Sync Impact Report
 ==================
-Version change: 1.1.0 → 1.2.0 (Minor: Added Fast Iteration principle)
+Version change: 1.2.0 → 1.3.0 (Minor: Added Continuous Integration principle)
 
 Modified principles:
-- Added VII. Fast Iteration & Incremental Demo (new core principle)
-- Technical Standards updated with hot reload workflow
+- Added VIII. Continuous Integration & Atomic Commits (new core principle)
+- Development Workflow updated with commit/push requirements
 
 Added sections:
-- VII. Fast Iteration & Incremental Demo (new core principle)
-- Hot reload requirement in Technical Standards
+- VIII. Continuous Integration & Atomic Commits (new core principle)
+- Commit frequency requirements in Development Workflow
 
 Removed sections: None
 
@@ -101,6 +101,31 @@ finish.
 provide confidence that the system works incrementally. Waiting until "everything is
 done" creates integration nightmares and demotivates developers.
 
+### VIII. Continuous Integration & Atomic Commits (NON-NEGOTIABLE)
+
+After EVERY task completion, developers MUST commit and push changes immediately. Each
+task MUST result in an atomic commit that is independently buildable, testable, and
+deployable.
+
+**Commit Requirements**:
+- Commit immediately after completing each task from tasks.md
+- Run `dart analyze` and `flutter test` before every commit - MUST pass with 0 errors
+- Each commit MUST represent a complete, working slice of functionality
+- Push to remote repository after every commit (no local commit batching)
+- Commit messages MUST reference task ID (e.g., "T013: Create WorkspaceRepository")
+- NEVER accumulate multiple tasks before committing
+- If a task fails tests or analysis, fix before committing - do not commit broken code
+
+**Branch Hygiene**:
+- Feature branches MUST be pushed daily at minimum
+- Long-running branches (>1 day without push) MUST be rebased on main regularly
+- Pull requests MUST contain small, reviewable changes (<400 lines preferred)
+- Large features MUST be split into multiple PRs along task boundaries
+
+**Rationale**: Frequent commits and pushes reduce merge conflicts, enable continuous
+integration, provide backup of work, and allow team visibility into progress. Atomic
+commits make code review easier and rollback safer.
+
 ## Technical Standards
 
 **Language & Framework**: Dart 3.10.8+ with Flutter SDK. Use Zuraffa (v2.0.0+) for code
@@ -152,6 +177,14 @@ merge flow. Specs MUST include measurable success criteria and edge cases.
 - Stop at checkpoints to validate user stories independently
 - Deploy/demo MVP after P1 (User Story 1) before continuing to P2, P3, P4
 
+**Continuous Integration**:
+- Commit after EVERY task - no exceptions
+- Run `dart analyze && flutter test` before each commit
+- Push to remote immediately after commit
+- Commit message format: "T{ID}: {task description}" (e.g., "T013: Create WorkspaceRepository")
+- NEVER batch multiple tasks into a single commit
+- Fix broken builds immediately - do not continue working on broken code
+
 **Documentation**: Complex business logic MUST have inline comments. Public APIs
 (UseCase methods, Repository interfaces) MUST have dartdoc comments explaining purpose,
 parameters, and return types.
@@ -173,10 +206,11 @@ All developers MUST verify compliance with these principles during:
 - Privacy reviews (BYOK, Privacy by Default)
 - Code generation (Zuraffa-First enforcement)
 - Task planning (Fast Iteration validation)
+- Commit reviews (Continuous Integration compliance)
 
 Complexity MUST be justified in implementation plans (Complexity Tracking section). If
 a principle conflict is unavoidable, document the exception, rationale, and proposed
 alternative principle that would have applied. Use this constitution as the ultimate
 authority when questions arise about code organization, patterns, or practices.
 
-**Version**: 1.2.0 | **Ratified**: 2026-02-14 | **Last Amended**: 2026-02-17
+**Version**: 1.3.0 | **Ratified**: 2026-02-14 | **Last Amended**: 2026-02-17
