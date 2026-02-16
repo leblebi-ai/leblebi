@@ -7,6 +7,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 /// - Box initialization for different data types
 /// - Encrypted box for sensitive credentials
 /// - Platform-specific secure storage for encryption keys
+///
+/// Security: Encryption keys are stored in platform secure storage:
+/// - macOS/iOS: Keychain
+/// - Android: EncryptedSharedPreferences
+/// - Linux: libsecret (GNOME Keyring/KWallet)
+/// - Windows: Windows Credential Manager
 class HiveDatasource {
   static const String _workspaceBoxName = 'workspaces';
   static const String _conversationBoxName = 'conversations';

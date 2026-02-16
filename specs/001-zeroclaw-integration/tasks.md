@@ -46,15 +46,15 @@
 - [X] T010 [P] Create ToolConfiguration entity using `zuraffa_entity_create --name ToolConfiguration --json --compare`
 - [X] T011 [P] Create SearchResult entity using `zuraffa_entity_create --name SearchResult --json --compare`
 - [X] T012 Run `zuraffa_build` to generate .g.dart serialization files for all entities
-- [ ] T013 [P] Create WorkspaceRepository interface in lib/src/domain/repositories/workspace_repository.dart
-- [ ] T014 [P] Create ConversationRepository interface in lib/src/domain/repositories/conversation_repository.dart
-- [ ] T015 [P] Create GatewayRepository interface in lib/src/domain/repositories/gateway_repository.dart
-- [ ] T016 [P] Create ToolRepository interface in lib/src/domain/repositories/tool_repository.dart
-- [ ] T017 [P] Setup get_it dependency injection in lib/src/di/injection_container.dart
-- [ ] T018 [P] Create ZeroClaw API datasource in lib/src/data/datasources/remote/zeroclaw_api_datasource.dart
-- [ ] T019 [P] Implement Hive local storage initialization with encrypted box for credentials
+- [X] T013 [P] Create WorkspaceRepository interface in lib/src/domain/repositories/workspace_repository.dart
+- [X] T014 [P] Create ConversationRepository interface in lib/src/domain/repositories/conversation_repository.dart
+- [X] T015 [P] Create GatewayRepository interface in lib/src/domain/repositories/gateway_repository.dart
+- [X] T016 [P] Create ToolRepository interface in lib/src/domain/repositories/tool_repository.dart
+- [X] T017 [P] Setup get_it dependency injection in lib/src/di/injection_container.dart
+- [X] T018 [P] Create ZeroClaw API datasource in lib/src/data/datasources/remote/zeroclaw_api_datasource.dart
+- [X] T019 [P] Implement Hive local storage initialization with encrypted box for credentials
 
-**Checkpoint**: Foundation ready - user story implementation can now begin in parallel
+**Checkpoint**: ✅ Foundation ready - user story implementation can now begin in parallel
 
 ---
 
