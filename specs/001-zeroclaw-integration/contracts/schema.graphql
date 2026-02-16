@@ -1,0 +1,554 @@
+# GraphQL Contracts: ZeroClaw Flutter Interface
+
+**Created**: 2026-02-17
+**Purpose**: Define GraphQL API contracts for ZeroClaw gateway integration
+
+---
+
+## Schema Overview
+
+This schema represents the client-side GraphQL operations for interacting with the ZeroClaw gateway API. The Flutter app will use these contracts to generate type-safe API clients.
+
+---
+
+## Queries
+
+### GetWorkspace
+
+```graphql
+query GetWorkspace($id: ID!) {
+  workspace(id: $id) {
+    id
+    name
+    description
+    gatewayConnectionId
+    identityConfig {
+      name
+      personality
+      systemPrompt
+      model
+      temperature
+      autonomyLevel
+    }
+    toolConfigurations {
+      id
+      toolName
+      isEnabled
+      scope {
+        allowedDirectories
+        allowedDomains
+        allowedCommands
+        workspaceOnly
+      }
+      permissions
+      configOverrides
+    }
+    activeConversationId
+    createdAt
+    updatedAt
+  }
+}
+```
+
+### GetWorkspaceList
+
+```graphql
+query GetWorkspaceList {
+  workspaces {
+    id
+    name
+    description
+    activeConversationId
+    createdAt
+    updatedAt
+  }
+}
+```
+
+### GetConversation
+
+```graphql
+query GetConversation($id: ID!) {
+  conversation(id: $id) {
+    id
+    workspaceId
+    title
+    messages {
+      id
+      sender
+      content
+      timestamp
+      status
+      toolCalls {
+        toolName
+        arguments
+        status
+        result
+        error
+        executedAt
+      }
+      metadata {
+        tokenCount
+        model
+        temperature
+        provider
+        latencyMs
+      }
+    }
+    createdAt
+    updatedAt
+    lastMessageAt
+    messageCount
+    isArchived
+  }
+}
+```
+
+### GetConversationList
+
+```graphql
+query GetConversationList($workspaceId: ID!, $limit: Int = 50, $cursor: String) {
+  conversations(workspaceId: $workspaceId, limit: $limit, cursor: $cursor) {
+    items {
+      id
+      title
+      lastMessageAt
+      messageCount
+      isArchived
+    }
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+  }
+}
+```
+
+### SearchConversations
+
+```graphql
+query SearchConversations($query: String!, $workspaceId: ID, $limit: Int = 20) {
+  searchConversations(query: $query, workspaceId: $workspaceId, limit: $limit) {
+    message {
+      id
+      content
+      timestamp
+      sender
+    }
+    workspaceName
+    conversationTitle
+    relevanceScore
+    matchType
+    highlightedSnippet
+  }
+}
+```
+
+### GetGatewayConnection
+
+```graphql
+query GetGatewayConnection($id: ID!) {
+  gatewayConnection(id: $id) {
+    id
+    name
+    url
+    status
+    lastConnectedAt
+    lastError
+    lastErrorAt
+  }
+}
+```
+
+### GetAgentStatus
+
+```graphql
+query GetAgentStatus($workspaceId: ID!) {
+  agentStatus(workspaceId: $workspaceId) {
+    isOnline
+    currentModel
+    currentProvider
+    activeTools
+    memoryUsage
+    uptime
+  }
+}
+```
+
+---
+
+## Mutations
+
+### CreateWorkspace
+
+```graphql
+mutation CreateWorkspace($input: CreateWorkspaceInput!) {
+  createWorkspace(input: $input) {
+    id
+    name
+    description
+    gatewayConnectionId
+    identityConfig {
+      name
+      model
+      temperature
+      autonomyLevel
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+input CreateWorkspaceInput {
+  name: String!
+  description: String
+  gatewayConnectionId: ID
+  identityConfig: IdentityConfigInput!
+}
+
+input IdentityConfigInput {
+  name: String!
+  personality: String
+  systemPrompt: String
+  model: String!
+  temperature: Float = 0.7
+  autonomyLevel: AutonomyLevel = SUPERVISED
+}
+```
+
+### UpdateWorkspace
+
+```graphql
+mutation UpdateWorkspace($id: ID!, $input: UpdateWorkspaceInput!) {
+  updateWorkspace(id: $id, input: $input) {
+    id
+    name
+    description
+    gatewayConnectionId
+    identityConfig {
+      name
+      personality
+      systemPrompt
+      model
+      temperature
+      autonomyLevel
+    }
+    updatedAt
+  }
+}
+
+input UpdateWorkspaceInput {
+  name: String
+  description: String
+  gatewayConnectionId: ID
+  identityConfig: IdentityConfigInput
+}
+```
+
+### DeleteWorkspace
+
+```graphql
+mutation DeleteWorkspace($id: ID!) {
+  deleteWorkspace(id: $id) {
+    success
+    message
+  }
+}
+```
+
+### SwitchWorkspace
+
+```graphql
+mutation SwitchWorkspace($workspaceId: ID!) {
+  switchWorkspace(workspaceId: $workspaceId) {
+    id
+    name
+    activeConversationId
+    updatedAt
+  }
+}
+```
+
+### SendMessage
+
+```graphql
+mutation SendMessage($conversationId: ID!, $content: String!, $replyToMessageId: ID) {
+  sendMessage(
+    conversationId: $conversationId
+    content: $content
+    replyToMessageId: $replyToMessageId
+  ) {
+    id
+    sender
+    content
+    timestamp
+    status
+    metadata {
+      tokenCount
+      model
+      provider
+      latencyMs
+    }
+  }
+}
+```
+
+### UpdateToolConfiguration
+
+```graphql
+mutation UpdateToolConfiguration($workspaceId: ID!, $toolName: String!, $input: ToolConfigInput!) {
+  updateToolConfiguration(
+    workspaceId: $workspaceId
+    toolName: $toolName
+    input: $input
+  ) {
+    id
+    toolName
+    isEnabled
+    scope {
+      allowedDirectories
+      allowedDomains
+      allowedCommands
+      workspaceOnly
+    }
+    permissions
+    configOverrides
+    updatedAt
+  }
+}
+
+input ToolConfigInput {
+  isEnabled: Boolean
+  scope: ToolScopeInput
+  permissions: [ToolPermission!]
+  configOverrides: JSON
+}
+
+input ToolScopeInput {
+  allowedDirectories: [String!]
+  allowedDomains: [String!]
+  allowedCommands: [String!]
+  workspaceOnly: Boolean
+}
+```
+
+### ConnectGateway
+
+```graphql
+mutation ConnectGateway($url: String!, $pairingCode: String!) {
+  connectGateway(url: $url, pairingCode: $pairingCode) {
+    id
+    name
+    url
+    status
+    lastConnectedAt
+  }
+}
+```
+
+### DisconnectGateway
+
+```graphql
+mutation DisconnectGateway($connectionId: ID!) {
+  disconnectGateway(connectionId: $connectionId) {
+    id
+    status
+    lastConnectedAt
+  }
+}
+```
+
+### TestConnection
+
+```graphql
+mutation TestConnection($connectionId: ID!) {
+  testConnection(connectionId: $connectionId) {
+    success
+    message
+    latencyMs
+  }
+}
+```
+
+### ArchiveConversation
+
+```graphql
+mutation ArchiveConversation($conversationId: ID!) {
+  archiveConversation(conversationId: $conversationId) {
+    id
+    isArchived
+    updatedAt
+  }
+}
+```
+
+### RestoreConversation
+
+```graphql
+mutation RestoreConversation($conversationId: ID!) {
+  restoreConversation(conversationId: $conversationId) {
+    id
+    isArchived
+    updatedAt
+  }
+}
+```
+
+---
+
+## Subscriptions
+
+### ConversationUpdated
+
+```graphql
+subscription ConversationUpdated($conversationId: ID!) {
+  conversationUpdated(conversationId: $conversationId) {
+    id
+    messages {
+      id
+      sender
+      content
+      timestamp
+      status
+    }
+    lastMessageAt
+    messageCount
+  }
+}
+```
+
+### MessageReceived
+
+```graphql
+subscription MessageReceived($conversationId: ID!) {
+  messageReceived(conversationId: $conversationId) {
+    id
+    sender
+    content
+    timestamp
+    status
+    toolCalls {
+      toolName
+      arguments
+      status
+      result
+      error
+    }
+    metadata {
+      tokenCount
+      model
+      provider
+      latencyMs
+    }
+  }
+}
+```
+
+### ConnectionStatusChanged
+
+```graphql
+subscription ConnectionStatusChanged {
+  connectionStatusChanged {
+    connectionId
+    status
+    lastError
+    lastErrorAt
+    lastConnectedAt
+  }
+}
+```
+
+### AgentStatusChanged
+
+```graphql
+subscription AgentStatusChanged($workspaceId: ID!) {
+  agentStatusChanged(workspaceId: $workspaceId) {
+    isOnline
+    currentModel
+    currentProvider
+    activeTools
+    memoryUsage
+    uptime
+  }
+}
+```
+
+---
+
+## Enums
+
+```graphql
+enum MessageSender {
+  USER
+  AI
+  SYSTEM
+}
+
+enum MessageStatus {
+  PENDING
+  SENT
+  DELIVERED
+  FAILED
+}
+
+enum ConnectionStatus {
+  DISCONNECTED
+  CONNECTING
+  CONNECTED
+  ERROR
+  RECONNECTING
+}
+
+enum AutonomyLevel {
+  SUPERVISED
+  SEMI_AUTONOMOUS
+  AUTONOMOUS
+}
+
+enum ToolCallStatus {
+  PENDING
+  EXECUTING
+  SUCCESS
+  ERROR
+}
+
+enum SearchMatchType {
+  KEYWORD
+  SEMANTIC
+  HYBRID
+}
+
+enum ToolPermission {
+  READ
+  WRITE
+  EXECUTE
+  NETWORK
+}
+```
+
+---
+
+## Scalars
+
+```graphql
+scalar DateTime
+scalar JSON
+```
+
+---
+
+## ZeroClaw Gateway REST API Mapping
+
+The GraphQL operations above map to the following ZeroClaw REST endpoints:
+
+| GraphQL Operation | REST Endpoint | Method |
+|-------------------|---------------|--------|
+| `connectGateway` | `/pair` | POST |
+| `sendMessage` | `/webhook` | POST |
+| `testConnection` | `/health` | GET |
+| `GetAgentStatus` | `/agent/status` | GET |
+| `UpdateToolConfiguration` | `/workspace/{id}/tools` | PUT |
+
+**Note**: The Flutter app will implement a GraphQL-to-REST adapter that translates GraphQL operations into ZeroClaw gateway REST API calls.
