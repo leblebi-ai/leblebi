@@ -1,15 +1,15 @@
 <!--
 Sync Impact Report
 ==================
-Version change: 1.2.0 → 1.3.0 (Minor: Added Continuous Integration principle)
+Version change: 1.3.0 → 1.4.0 (Minor: Added Issue Tracking & PR Workflow principle)
 
 Modified principles:
-- Added VIII. Continuous Integration & Atomic Commits (new core principle)
-- Development Workflow updated with commit/push requirements
+- Added IX. Issue Tracking & Pull Request Workflow (new core principle)
+- Development Workflow updated with issue/PR management requirements
 
 Added sections:
-- VIII. Continuous Integration & Atomic Commits (new core principle)
-- Commit frequency requirements in Development Workflow
+- IX. Issue Tracking & Pull Request Workflow (new core principle)
+- Issue management and PR creation in Development Workflow
 
 Removed sections: None
 
@@ -126,6 +126,43 @@ deployable.
 integration, provide backup of work, and allow team visibility into progress. Atomic
 commits make code review easier and rollback safer.
 
+### IX. Issue Tracking & Pull Request Workflow (NON-NEGOTIABLE)
+
+After completing EACH issue from the GitHub issues tracker, developers MUST update the
+issue checkboxes, create a pull request, and close the issue. Each issue MUST result
+in a merged PR before moving to the next issue.
+
+**Issue Management Requirements**:
+- Each issue from specs/001-zeroclaw-integration/tasks.md MUST have a corresponding
+  GitHub issue with task checkboxes
+- Update issue checkboxes in real-time as tasks are completed
+- Mark task as [X] in tasks.md AND check corresponding checkbox in GitHub issue
+- When ALL issue tasks are complete:
+  1. Verify `dart analyze` passes with 0 errors
+  2. Verify `flutter test` passes for all related tests
+  3. Create a pull request from feature branch to main
+  4. Link PR to issue using "Closes #ISSUE_NUMBER" in PR description
+  5. Request review from team members
+  6. After PR approval and merge, close the GitHub issue
+- NEVER work on the next issue before the current issue's PR is merged
+- PR description MUST include:
+  - Summary of changes
+  - Issue number (e.g., "Closes #27")
+  - Testing performed
+  - Screenshots/demo if UI changes
+
+**PR Size & Review**:
+- Each issue SHOULD result in one PR (not multiple PRs per issue)
+- PRs MUST be small and reviewable (<400 lines changed preferred)
+- Large issues MUST be split into smaller sub-issues before implementation
+- All PRs require at least one team review before merge
+- CI checks MUST pass before merge (dart analyze, flutter test)
+
+**Rationale**: Issue-based development with PR workflow ensures code review, provides
+audit trail, enables team collaboration, and maintains code quality. Updating
+checkboxes in real-time provides visibility into progress and blocks context switching
+until work is reviewed and merged.
+
 ## Technical Standards
 
 **Language & Framework**: Dart 3.10.8+ with Flutter SDK. Use Zuraffa (v2.0.0+) for code
@@ -185,6 +222,17 @@ merge flow. Specs MUST include measurable success criteria and edge cases.
 - NEVER batch multiple tasks into a single commit
 - Fix broken builds immediately - do not continue working on broken code
 
+**Issue & PR Workflow**:
+- Each issue (e.g., Issue #27: Foundational Infrastructure) tracked in GitHub
+- Update GitHub issue checkboxes as tasks complete
+- After completing ALL tasks in an issue:
+  1. Verify all tests pass and dart analyze shows 0 errors
+  2. Create PR with description "Closes #ISSUE_NUMBER"
+  3. Request review and address feedback
+  4. Merge PR and close issue
+  5. ONLY THEN start the next issue
+- NEVER start a new issue before the previous issue's PR is merged
+
 **Documentation**: Complex business logic MUST have inline comments. Public APIs
 (UseCase methods, Repository interfaces) MUST have dartdoc comments explaining purpose,
 parameters, and return types.
@@ -207,10 +255,11 @@ All developers MUST verify compliance with these principles during:
 - Code generation (Zuraffa-First enforcement)
 - Task planning (Fast Iteration validation)
 - Commit reviews (Continuous Integration compliance)
+- PR reviews (Issue Tracking & PR Workflow compliance)
 
 Complexity MUST be justified in implementation plans (Complexity Tracking section). If
 a principle conflict is unavoidable, document the exception, rationale, and proposed
 alternative principle that would have applied. Use this constitution as the ultimate
 authority when questions arise about code organization, patterns, or practices.
 
-**Version**: 1.3.0 | **Ratified**: 2026-02-14 | **Last Amended**: 2026-02-17
+**Version**: 1.4.0 | **Ratified**: 2026-02-14 | **Last Amended**: 2026-02-17
