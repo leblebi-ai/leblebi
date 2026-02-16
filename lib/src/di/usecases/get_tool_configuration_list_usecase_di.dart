@@ -1,0 +1,10 @@
+import 'package:get_it/get_it.dart';
+
+import '../../domain/repositories/tool_configuration_repository.dart';
+import '../../domain/usecases/tool_configuration/get_tool_configuration_list_usecase.dart';
+
+void registerGetToolConfigurationListUseCase(GetIt getIt) {
+  getIt.registerLazySingleton<GetToolConfigurationListUseCase>(
+    () => GetToolConfigurationListUseCase(getIt<ToolConfigurationRepository>()),
+  );
+}
