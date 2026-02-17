@@ -27,6 +27,13 @@ class DataConversationRepository
   }
 
   @override
+  Future<Conversation> update(
+    UpdateParams<String, Partial<Conversation>> params,
+  ) {
+    return _dataSource.update(params);
+  }
+
+  @override
   Future<void> delete(DeleteParams<String> params) {
     return _dataSource.delete(params);
   }

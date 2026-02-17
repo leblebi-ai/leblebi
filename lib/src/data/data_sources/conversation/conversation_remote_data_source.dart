@@ -24,6 +24,13 @@ class ConversationRemoteDataSource
   }
 
   @override
+  Future<Conversation> update(
+    UpdateParams<String, Partial<Conversation>> params,
+  ) async {
+    throw UnimplementedError('Implement remote update');
+  }
+
+  @override
   Future<void> delete(DeleteParams<String> params) async {
     throw UnimplementedError('Implement remote delete');
   }

@@ -130,6 +130,16 @@ class ZeroClawMessageResponse {
       metadata: json['metadata'] as Map<String, dynamic>?,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'message': message,
+      'provider': provider,
+      'model': model,
+      'latencyMs': latencyMs,
+      'metadata': metadata,
+    };
+  }
 }
 
 /// ZeroClaw API exception

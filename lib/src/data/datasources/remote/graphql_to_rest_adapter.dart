@@ -1,8 +1,3 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import '../../../domain/entities/gateway_connection/gateway_connection.dart';
-import '../../../domain/entities/conversation/conversation.dart';
-import '../../../domain/entities/message/message.dart';
 import 'zeroclaw_api_datasource.dart';
 
 /// GraphQL to REST Adapter
@@ -41,8 +36,8 @@ class GraphqlToRestAdapter {
     required String conversationId,
     required String content,
   }) async {
-    final response = await _apiDatasource.webhook(content);
-    return json.decode(response) as Map<String, dynamic>;
+    final response = await _apiDatasource.sendMessage(content);
+    return response.toJson();
   }
 
   /// Execute TestConnection query
