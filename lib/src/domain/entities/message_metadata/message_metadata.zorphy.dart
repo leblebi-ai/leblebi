@@ -12,47 +12,47 @@ part of 'message_metadata.dart';
 class MessageMetadata {
   final int? tokenCount;
   final String? model;
-  final double? temperature;
   final String? provider;
   final int? latencyMs;
+  final List<ToolCall>? toolCalls;
 
   MessageMetadata({
     this.tokenCount,
     this.model,
-    this.temperature,
     this.provider,
     this.latencyMs,
+    this.toolCalls,
   });
 
   MessageMetadata copyWith({
     int? tokenCount,
     String? model,
-    double? temperature,
     String? provider,
     int? latencyMs,
+    List<ToolCall>? toolCalls,
   }) {
     return MessageMetadata(
       tokenCount: tokenCount ?? this.tokenCount,
       model: model ?? this.model,
-      temperature: temperature ?? this.temperature,
       provider: provider ?? this.provider,
       latencyMs: latencyMs ?? this.latencyMs,
+      toolCalls: toolCalls ?? this.toolCalls,
     );
   }
 
   MessageMetadata copyWithMessageMetadata({
     int? tokenCount,
     String? model,
-    double? temperature,
     String? provider,
     int? latencyMs,
+    List<ToolCall>? toolCalls,
   }) {
     return copyWith(
       tokenCount: tokenCount,
       model: model,
-      temperature: temperature,
       provider: provider,
       latencyMs: latencyMs,
+      toolCalls: toolCalls,
     );
   }
 
@@ -70,11 +70,6 @@ class MessageMetadata {
                 ? _patchMap[MessageMetadata$.model](this.model)
                 : _patchMap[MessageMetadata$.model]
           : this.model,
-      temperature: _patchMap.containsKey(MessageMetadata$.temperature)
-          ? (_patchMap[MessageMetadata$.temperature] is Function)
-                ? _patchMap[MessageMetadata$.temperature](this.temperature)
-                : _patchMap[MessageMetadata$.temperature]
-          : this.temperature,
       provider: _patchMap.containsKey(MessageMetadata$.provider)
           ? (_patchMap[MessageMetadata$.provider] is Function)
                 ? _patchMap[MessageMetadata$.provider](this.provider)
@@ -85,6 +80,11 @@ class MessageMetadata {
                 ? _patchMap[MessageMetadata$.latencyMs](this.latencyMs)
                 : _patchMap[MessageMetadata$.latencyMs]
           : this.latencyMs,
+      toolCalls: _patchMap.containsKey(MessageMetadata$.toolCalls)
+          ? (_patchMap[MessageMetadata$.toolCalls] is Function)
+                ? _patchMap[MessageMetadata$.toolCalls](this.toolCalls)
+                : _patchMap[MessageMetadata$.toolCalls]
+          : this.toolCalls,
     );
   }
 
@@ -94,9 +94,9 @@ class MessageMetadata {
     return other is MessageMetadata &&
         tokenCount == other.tokenCount &&
         model == other.model &&
-        temperature == other.temperature &&
         provider == other.provider &&
-        latencyMs == other.latencyMs;
+        latencyMs == other.latencyMs &&
+        toolCalls == other.toolCalls;
   }
 
   @override
@@ -104,9 +104,9 @@ class MessageMetadata {
     return Object.hash(
       this.tokenCount,
       this.model,
-      this.temperature,
       this.provider,
       this.latencyMs,
+      this.toolCalls,
     );
   }
 
@@ -117,11 +117,11 @@ class MessageMetadata {
         ', ' +
         'model: ${model}' +
         ', ' +
-        'temperature: ${temperature}' +
-        ', ' +
         'provider: ${provider}' +
         ', ' +
-        'latencyMs: ${latencyMs})';
+        'latencyMs: ${latencyMs}' +
+        ', ' +
+        'toolCalls: ${toolCalls})';
   }
 
   /// Creates a [MessageMetadata] instance from JSON
@@ -155,10 +155,6 @@ extension MessageMetadataPropertyHelpers on MessageMetadata {
   bool get noModel => model == null;
   String get modelRequired =>
       model ?? (throw StateError('model is required but was null'));
-  bool get hasTemperature => temperature != null;
-  bool get noTemperature => temperature == null;
-  double get temperatureRequired =>
-      temperature ?? (throw StateError('temperature is required but was null'));
   bool get hasProvider => provider != null;
   bool get noProvider => provider == null;
   String get providerRequired =>
@@ -167,6 +163,10 @@ extension MessageMetadataPropertyHelpers on MessageMetadata {
   bool get noLatencyMs => latencyMs == null;
   int get latencyMsRequired =>
       latencyMs ?? (throw StateError('latencyMs is required but was null'));
+  List<ToolCall> get toolCallsRequired =>
+      toolCalls ?? (throw StateError('toolCalls is required but was null'));
+  bool get hasToolCalls => toolCalls?.isNotEmpty ?? false;
+  bool get noToolCalls => toolCalls?.isEmpty ?? true;
 }
 
 extension MessageMetadataSerialization on MessageMetadata {
@@ -189,7 +189,7 @@ extension MessageMetadataSerialization on MessageMetadata {
   }
 }
 
-enum MessageMetadata$ { tokenCount, model, temperature, provider, latencyMs }
+enum MessageMetadata$ { tokenCount, model, provider, latencyMs, toolCalls }
 
 class MessageMetadataPatch implements Patch<MessageMetadata> {
   final Map<MessageMetadata$, dynamic> _patch = {};
@@ -269,11 +269,6 @@ class MessageMetadataPatch implements Patch<MessageMetadata> {
     return this;
   }
 
-  MessageMetadataPatch withTemperature(double? value) {
-    _patch[MessageMetadata$.temperature] = value;
-    return this;
-  }
-
   MessageMetadataPatch withProvider(String? value) {
     _patch[MessageMetadata$.provider] = value;
     return this;
@@ -281,6 +276,11 @@ class MessageMetadataPatch implements Patch<MessageMetadata> {
 
   MessageMetadataPatch withLatencyMs(int? value) {
     _patch[MessageMetadata$.latencyMs] = value;
+    return this;
+  }
+
+  MessageMetadataPatch withToolCalls(List<ToolCall>? value) {
+    _patch[MessageMetadata$.toolCalls] = value;
     return this;
   }
 }
@@ -294,11 +294,6 @@ abstract final class MessageMetadataFields {
   );
   static String? _$getmodel(MessageMetadata e) => e.model;
   static const model = Field<MessageMetadata, String?>('model', _$getmodel);
-  static double? _$gettemperature(MessageMetadata e) => e.temperature;
-  static const temperature = Field<MessageMetadata, double?>(
-    'temperature',
-    _$gettemperature,
-  );
   static String? _$getprovider(MessageMetadata e) => e.provider;
   static const provider = Field<MessageMetadata, String?>(
     'provider',
@@ -308,6 +303,11 @@ abstract final class MessageMetadataFields {
   static const latencyMs = Field<MessageMetadata, int?>(
     'latencyMs',
     _$getlatencyMs,
+  );
+  static List<ToolCall>? _$gettoolCalls(MessageMetadata e) => e.toolCalls;
+  static const toolCalls = Field<MessageMetadata, List<ToolCall>?>(
+    'toolCalls',
+    _$gettoolCalls,
   );
 }
 
@@ -321,14 +321,14 @@ extension MessageMetadataCompareE on MessageMetadata {
     if (model != other.model) {
       diff['model'] = () => other.model;
     }
-    if (temperature != other.temperature) {
-      diff['temperature'] = () => other.temperature;
-    }
     if (provider != other.provider) {
       diff['provider'] = () => other.provider;
     }
     if (latencyMs != other.latencyMs) {
       diff['latencyMs'] = () => other.latencyMs;
+    }
+    if (toolCalls != other.toolCalls) {
+      diff['toolCalls'] = () => other.toolCalls;
     }
     return diff;
   }

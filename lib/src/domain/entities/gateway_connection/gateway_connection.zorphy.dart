@@ -11,58 +11,58 @@ part of 'gateway_connection.dart';
 @JsonSerializable(explicitToJson: true)
 class GatewayConnection {
   final String id;
+  final AIProviderType providerType;
   final String name;
   final String url;
   final String? pairingCode;
   final String? bearerToken;
-  final DateTime? tokenExpiresAt;
   final ConnectionStatus status;
   final DateTime? lastConnectedAt;
-  final String? lastError;
   final DateTime? lastErrorAt;
+  final String? lastError;
   final DateTime createdAt;
   final DateTime updatedAt;
 
   GatewayConnection({
     required this.id,
+    required this.providerType,
     required this.name,
     required this.url,
     this.pairingCode,
     this.bearerToken,
-    this.tokenExpiresAt,
     required this.status,
     this.lastConnectedAt,
-    this.lastError,
     this.lastErrorAt,
+    this.lastError,
     required this.createdAt,
     required this.updatedAt,
   });
 
   GatewayConnection copyWith({
     String? id,
+    AIProviderType? providerType,
     String? name,
     String? url,
     String? pairingCode,
     String? bearerToken,
-    DateTime? tokenExpiresAt,
     ConnectionStatus? status,
     DateTime? lastConnectedAt,
-    String? lastError,
     DateTime? lastErrorAt,
+    String? lastError,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
     return GatewayConnection(
       id: id ?? this.id,
+      providerType: providerType ?? this.providerType,
       name: name ?? this.name,
       url: url ?? this.url,
       pairingCode: pairingCode ?? this.pairingCode,
       bearerToken: bearerToken ?? this.bearerToken,
-      tokenExpiresAt: tokenExpiresAt ?? this.tokenExpiresAt,
       status: status ?? this.status,
       lastConnectedAt: lastConnectedAt ?? this.lastConnectedAt,
-      lastError: lastError ?? this.lastError,
       lastErrorAt: lastErrorAt ?? this.lastErrorAt,
+      lastError: lastError ?? this.lastError,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -70,29 +70,29 @@ class GatewayConnection {
 
   GatewayConnection copyWithGatewayConnection({
     String? id,
+    AIProviderType? providerType,
     String? name,
     String? url,
     String? pairingCode,
     String? bearerToken,
-    DateTime? tokenExpiresAt,
     ConnectionStatus? status,
     DateTime? lastConnectedAt,
-    String? lastError,
     DateTime? lastErrorAt,
+    String? lastError,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
     return copyWith(
       id: id,
+      providerType: providerType,
       name: name,
       url: url,
       pairingCode: pairingCode,
       bearerToken: bearerToken,
-      tokenExpiresAt: tokenExpiresAt,
       status: status,
       lastConnectedAt: lastConnectedAt,
-      lastError: lastError,
       lastErrorAt: lastErrorAt,
+      lastError: lastError,
       createdAt: createdAt,
       updatedAt: updatedAt,
     );
@@ -109,6 +109,11 @@ class GatewayConnection {
                 ? _patchMap[GatewayConnection$.id](this.id)
                 : _patchMap[GatewayConnection$.id]
           : this.id,
+      providerType: _patchMap.containsKey(GatewayConnection$.providerType)
+          ? (_patchMap[GatewayConnection$.providerType] is Function)
+                ? _patchMap[GatewayConnection$.providerType](this.providerType)
+                : _patchMap[GatewayConnection$.providerType]
+          : this.providerType,
       name: _patchMap.containsKey(GatewayConnection$.name)
           ? (_patchMap[GatewayConnection$.name] is Function)
                 ? _patchMap[GatewayConnection$.name](this.name)
@@ -129,13 +134,6 @@ class GatewayConnection {
                 ? _patchMap[GatewayConnection$.bearerToken](this.bearerToken)
                 : _patchMap[GatewayConnection$.bearerToken]
           : this.bearerToken,
-      tokenExpiresAt: _patchMap.containsKey(GatewayConnection$.tokenExpiresAt)
-          ? (_patchMap[GatewayConnection$.tokenExpiresAt] is Function)
-                ? _patchMap[GatewayConnection$.tokenExpiresAt](
-                    this.tokenExpiresAt,
-                  )
-                : _patchMap[GatewayConnection$.tokenExpiresAt]
-          : this.tokenExpiresAt,
       status: _patchMap.containsKey(GatewayConnection$.status)
           ? (_patchMap[GatewayConnection$.status] is Function)
                 ? _patchMap[GatewayConnection$.status](this.status)
@@ -148,16 +146,16 @@ class GatewayConnection {
                   )
                 : _patchMap[GatewayConnection$.lastConnectedAt]
           : this.lastConnectedAt,
-      lastError: _patchMap.containsKey(GatewayConnection$.lastError)
-          ? (_patchMap[GatewayConnection$.lastError] is Function)
-                ? _patchMap[GatewayConnection$.lastError](this.lastError)
-                : _patchMap[GatewayConnection$.lastError]
-          : this.lastError,
       lastErrorAt: _patchMap.containsKey(GatewayConnection$.lastErrorAt)
           ? (_patchMap[GatewayConnection$.lastErrorAt] is Function)
                 ? _patchMap[GatewayConnection$.lastErrorAt](this.lastErrorAt)
                 : _patchMap[GatewayConnection$.lastErrorAt]
           : this.lastErrorAt,
+      lastError: _patchMap.containsKey(GatewayConnection$.lastError)
+          ? (_patchMap[GatewayConnection$.lastError] is Function)
+                ? _patchMap[GatewayConnection$.lastError](this.lastError)
+                : _patchMap[GatewayConnection$.lastError]
+          : this.lastError,
       createdAt: _patchMap.containsKey(GatewayConnection$.createdAt)
           ? (_patchMap[GatewayConnection$.createdAt] is Function)
                 ? _patchMap[GatewayConnection$.createdAt](this.createdAt)
@@ -176,15 +174,15 @@ class GatewayConnection {
     if (identical(this, other)) return true;
     return other is GatewayConnection &&
         id == other.id &&
+        providerType == other.providerType &&
         name == other.name &&
         url == other.url &&
         pairingCode == other.pairingCode &&
         bearerToken == other.bearerToken &&
-        tokenExpiresAt == other.tokenExpiresAt &&
         status == other.status &&
         lastConnectedAt == other.lastConnectedAt &&
-        lastError == other.lastError &&
         lastErrorAt == other.lastErrorAt &&
+        lastError == other.lastError &&
         createdAt == other.createdAt &&
         updatedAt == other.updatedAt;
   }
@@ -193,15 +191,15 @@ class GatewayConnection {
   int get hashCode {
     return Object.hash(
       this.id,
+      this.providerType,
       this.name,
       this.url,
       this.pairingCode,
       this.bearerToken,
-      this.tokenExpiresAt,
       this.status,
       this.lastConnectedAt,
-      this.lastError,
       this.lastErrorAt,
+      this.lastError,
       this.createdAt,
       this.updatedAt,
     );
@@ -212,6 +210,8 @@ class GatewayConnection {
     return 'GatewayConnection(' +
         'id: ${id}' +
         ', ' +
+        'providerType: ${providerType}' +
+        ', ' +
         'name: ${name}' +
         ', ' +
         'url: ${url}' +
@@ -220,15 +220,13 @@ class GatewayConnection {
         ', ' +
         'bearerToken: ${bearerToken}' +
         ', ' +
-        'tokenExpiresAt: ${tokenExpiresAt}' +
-        ', ' +
         'status: ${status}' +
         ', ' +
         'lastConnectedAt: ${lastConnectedAt}' +
         ', ' +
-        'lastError: ${lastError}' +
-        ', ' +
         'lastErrorAt: ${lastErrorAt}' +
+        ', ' +
+        'lastError: ${lastError}' +
         ', ' +
         'createdAt: ${createdAt}' +
         ', ' +
@@ -258,6 +256,9 @@ class GatewayConnection {
 }
 
 extension GatewayConnectionPropertyHelpers on GatewayConnection {
+  bool get isProviderTypeZeroClaw => providerType == AIProviderType.zeroClaw;
+  bool get isProviderTypePicoClaw => providerType == AIProviderType.picoClaw;
+  bool get isProviderTypeOpenClaw => providerType == AIProviderType.openClaw;
   bool get hasPairingCode => pairingCode != null;
   bool get noPairingCode => pairingCode == null;
   String get pairingCodeRequired =>
@@ -266,29 +267,24 @@ extension GatewayConnectionPropertyHelpers on GatewayConnection {
   bool get noBearerToken => bearerToken == null;
   String get bearerTokenRequired =>
       bearerToken ?? (throw StateError('bearerToken is required but was null'));
-  bool get hasTokenExpiresAt => tokenExpiresAt != null;
-  bool get noTokenExpiresAt => tokenExpiresAt == null;
-  DateTime get tokenExpiresAtRequired =>
-      tokenExpiresAt ??
-      (throw StateError('tokenExpiresAt is required but was null'));
-  bool get isStatusDISCONNECTED => status == ConnectionStatus.DISCONNECTED;
-  bool get isStatusCONNECTING => status == ConnectionStatus.CONNECTING;
-  bool get isStatusCONNECTED => status == ConnectionStatus.CONNECTED;
-  bool get isStatusERROR => status == ConnectionStatus.ERROR;
-  bool get isStatusRECONNECTING => status == ConnectionStatus.RECONNECTING;
+  bool get isStatusDisconnected => status == ConnectionStatus.disconnected;
+  bool get isStatusConnecting => status == ConnectionStatus.connecting;
+  bool get isStatusConnected => status == ConnectionStatus.connected;
+  bool get isStatusError => status == ConnectionStatus.error;
+  bool get isStatusReconnecting => status == ConnectionStatus.reconnecting;
   bool get hasLastConnectedAt => lastConnectedAt != null;
   bool get noLastConnectedAt => lastConnectedAt == null;
   DateTime get lastConnectedAtRequired =>
       lastConnectedAt ??
       (throw StateError('lastConnectedAt is required but was null'));
-  bool get hasLastError => lastError != null;
-  bool get noLastError => lastError == null;
-  String get lastErrorRequired =>
-      lastError ?? (throw StateError('lastError is required but was null'));
   bool get hasLastErrorAt => lastErrorAt != null;
   bool get noLastErrorAt => lastErrorAt == null;
   DateTime get lastErrorAtRequired =>
       lastErrorAt ?? (throw StateError('lastErrorAt is required but was null'));
+  bool get hasLastError => lastError != null;
+  bool get noLastError => lastError == null;
+  String get lastErrorRequired =>
+      lastError ?? (throw StateError('lastError is required but was null'));
 }
 
 extension GatewayConnectionSerialization on GatewayConnection {
@@ -313,15 +309,15 @@ extension GatewayConnectionSerialization on GatewayConnection {
 
 enum GatewayConnection$ {
   id,
+  providerType,
   name,
   url,
   pairingCode,
   bearerToken,
-  tokenExpiresAt,
   status,
   lastConnectedAt,
-  lastError,
   lastErrorAt,
+  lastError,
   createdAt,
   updatedAt,
 }
@@ -401,6 +397,11 @@ class GatewayConnectionPatch implements Patch<GatewayConnection> {
     return this;
   }
 
+  GatewayConnectionPatch withProviderType(AIProviderType? value) {
+    _patch[GatewayConnection$.providerType] = value;
+    return this;
+  }
+
   GatewayConnectionPatch withName(String? value) {
     _patch[GatewayConnection$.name] = value;
     return this;
@@ -421,11 +422,6 @@ class GatewayConnectionPatch implements Patch<GatewayConnection> {
     return this;
   }
 
-  GatewayConnectionPatch withTokenExpiresAt(DateTime? value) {
-    _patch[GatewayConnection$.tokenExpiresAt] = value;
-    return this;
-  }
-
   GatewayConnectionPatch withStatus(ConnectionStatus? value) {
     _patch[GatewayConnection$.status] = value;
     return this;
@@ -436,13 +432,13 @@ class GatewayConnectionPatch implements Patch<GatewayConnection> {
     return this;
   }
 
-  GatewayConnectionPatch withLastError(String? value) {
-    _patch[GatewayConnection$.lastError] = value;
+  GatewayConnectionPatch withLastErrorAt(DateTime? value) {
+    _patch[GatewayConnection$.lastErrorAt] = value;
     return this;
   }
 
-  GatewayConnectionPatch withLastErrorAt(DateTime? value) {
-    _patch[GatewayConnection$.lastErrorAt] = value;
+  GatewayConnectionPatch withLastError(String? value) {
+    _patch[GatewayConnection$.lastError] = value;
     return this;
   }
 
@@ -461,6 +457,12 @@ class GatewayConnectionPatch implements Patch<GatewayConnection> {
 abstract final class GatewayConnectionFields {
   static String _$getid(GatewayConnection e) => e.id;
   static const id = Field<GatewayConnection, String>('id', _$getid);
+  static AIProviderType _$getproviderType(GatewayConnection e) =>
+      e.providerType;
+  static const providerType = Field<GatewayConnection, AIProviderType>(
+    'providerType',
+    _$getproviderType,
+  );
   static String _$getname(GatewayConnection e) => e.name;
   static const name = Field<GatewayConnection, String>('name', _$getname);
   static String _$geturl(GatewayConnection e) => e.url;
@@ -475,11 +477,6 @@ abstract final class GatewayConnectionFields {
     'bearerToken',
     _$getbearerToken,
   );
-  static DateTime? _$gettokenExpiresAt(GatewayConnection e) => e.tokenExpiresAt;
-  static const tokenExpiresAt = Field<GatewayConnection, DateTime?>(
-    'tokenExpiresAt',
-    _$gettokenExpiresAt,
-  );
   static ConnectionStatus _$getstatus(GatewayConnection e) => e.status;
   static const status = Field<GatewayConnection, ConnectionStatus>(
     'status',
@@ -491,15 +488,15 @@ abstract final class GatewayConnectionFields {
     'lastConnectedAt',
     _$getlastConnectedAt,
   );
-  static String? _$getlastError(GatewayConnection e) => e.lastError;
-  static const lastError = Field<GatewayConnection, String?>(
-    'lastError',
-    _$getlastError,
-  );
   static DateTime? _$getlastErrorAt(GatewayConnection e) => e.lastErrorAt;
   static const lastErrorAt = Field<GatewayConnection, DateTime?>(
     'lastErrorAt',
     _$getlastErrorAt,
+  );
+  static String? _$getlastError(GatewayConnection e) => e.lastError;
+  static const lastError = Field<GatewayConnection, String?>(
+    'lastError',
+    _$getlastError,
   );
   static DateTime _$getcreatedAt(GatewayConnection e) => e.createdAt;
   static const createdAt = Field<GatewayConnection, DateTime>(
@@ -520,6 +517,9 @@ extension GatewayConnectionCompareE on GatewayConnection {
     if (id != other.id) {
       diff['id'] = () => other.id;
     }
+    if (providerType != other.providerType) {
+      diff['providerType'] = () => other.providerType;
+    }
     if (name != other.name) {
       diff['name'] = () => other.name;
     }
@@ -532,20 +532,17 @@ extension GatewayConnectionCompareE on GatewayConnection {
     if (bearerToken != other.bearerToken) {
       diff['bearerToken'] = () => other.bearerToken;
     }
-    if (tokenExpiresAt != other.tokenExpiresAt) {
-      diff['tokenExpiresAt'] = () => other.tokenExpiresAt;
-    }
     if (status != other.status) {
       diff['status'] = () => other.status;
     }
     if (lastConnectedAt != other.lastConnectedAt) {
       diff['lastConnectedAt'] = () => other.lastConnectedAt;
     }
-    if (lastError != other.lastError) {
-      diff['lastError'] = () => other.lastError;
-    }
     if (lastErrorAt != other.lastErrorAt) {
       diff['lastErrorAt'] = () => other.lastErrorAt;
+    }
+    if (lastError != other.lastError) {
+      diff['lastError'] = () => other.lastError;
     }
     if (createdAt != other.createdAt) {
       diff['createdAt'] = () => other.createdAt;

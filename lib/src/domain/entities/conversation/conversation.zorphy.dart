@@ -11,52 +11,48 @@ part of 'conversation.dart';
 @JsonSerializable(explicitToJson: true)
 class Conversation {
   final String id;
-  final String workspaceId;
+  final String? workspaceId;
   final String title;
-  final List<Message> messages;
+  final List<String> messageIds;
   final DateTime createdAt;
   final DateTime updatedAt;
   final DateTime? lastMessageAt;
   final int messageCount;
   final bool isArchived;
-  final Map<String, dynamic>? metadata;
 
   Conversation({
     required this.id,
-    required this.workspaceId,
+    this.workspaceId,
     required this.title,
-    required this.messages,
+    required this.messageIds,
     required this.createdAt,
     required this.updatedAt,
     this.lastMessageAt,
     required this.messageCount,
     required this.isArchived,
-    this.metadata,
   });
 
   Conversation copyWith({
     String? id,
     String? workspaceId,
     String? title,
-    List<Message>? messages,
+    List<String>? messageIds,
     DateTime? createdAt,
     DateTime? updatedAt,
     DateTime? lastMessageAt,
     int? messageCount,
     bool? isArchived,
-    Map<String, dynamic>? metadata,
   }) {
     return Conversation(
       id: id ?? this.id,
       workspaceId: workspaceId ?? this.workspaceId,
       title: title ?? this.title,
-      messages: messages ?? this.messages,
+      messageIds: messageIds ?? this.messageIds,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       lastMessageAt: lastMessageAt ?? this.lastMessageAt,
       messageCount: messageCount ?? this.messageCount,
       isArchived: isArchived ?? this.isArchived,
-      metadata: metadata ?? this.metadata,
     );
   }
 
@@ -64,25 +60,23 @@ class Conversation {
     String? id,
     String? workspaceId,
     String? title,
-    List<Message>? messages,
+    List<String>? messageIds,
     DateTime? createdAt,
     DateTime? updatedAt,
     DateTime? lastMessageAt,
     int? messageCount,
     bool? isArchived,
-    Map<String, dynamic>? metadata,
   }) {
     return copyWith(
       id: id,
       workspaceId: workspaceId,
       title: title,
-      messages: messages,
+      messageIds: messageIds,
       createdAt: createdAt,
       updatedAt: updatedAt,
       lastMessageAt: lastMessageAt,
       messageCount: messageCount,
       isArchived: isArchived,
-      metadata: metadata,
     );
   }
 
@@ -105,11 +99,11 @@ class Conversation {
                 ? _patchMap[Conversation$.title](this.title)
                 : _patchMap[Conversation$.title]
           : this.title,
-      messages: _patchMap.containsKey(Conversation$.messages)
-          ? (_patchMap[Conversation$.messages] is Function)
-                ? _patchMap[Conversation$.messages](this.messages)
-                : _patchMap[Conversation$.messages]
-          : this.messages,
+      messageIds: _patchMap.containsKey(Conversation$.messageIds)
+          ? (_patchMap[Conversation$.messageIds] is Function)
+                ? _patchMap[Conversation$.messageIds](this.messageIds)
+                : _patchMap[Conversation$.messageIds]
+          : this.messageIds,
       createdAt: _patchMap.containsKey(Conversation$.createdAt)
           ? (_patchMap[Conversation$.createdAt] is Function)
                 ? _patchMap[Conversation$.createdAt](this.createdAt)
@@ -135,11 +129,6 @@ class Conversation {
                 ? _patchMap[Conversation$.isArchived](this.isArchived)
                 : _patchMap[Conversation$.isArchived]
           : this.isArchived,
-      metadata: _patchMap.containsKey(Conversation$.metadata)
-          ? (_patchMap[Conversation$.metadata] is Function)
-                ? _patchMap[Conversation$.metadata](this.metadata)
-                : _patchMap[Conversation$.metadata]
-          : this.metadata,
     );
   }
 
@@ -150,13 +139,12 @@ class Conversation {
         id == other.id &&
         workspaceId == other.workspaceId &&
         title == other.title &&
-        messages == other.messages &&
+        messageIds == other.messageIds &&
         createdAt == other.createdAt &&
         updatedAt == other.updatedAt &&
         lastMessageAt == other.lastMessageAt &&
         messageCount == other.messageCount &&
-        isArchived == other.isArchived &&
-        metadata == other.metadata;
+        isArchived == other.isArchived;
   }
 
   @override
@@ -165,13 +153,12 @@ class Conversation {
       this.id,
       this.workspaceId,
       this.title,
-      this.messages,
+      this.messageIds,
       this.createdAt,
       this.updatedAt,
       this.lastMessageAt,
       this.messageCount,
       this.isArchived,
-      this.metadata,
     );
   }
 
@@ -184,7 +171,7 @@ class Conversation {
         ', ' +
         'title: ${title}' +
         ', ' +
-        'messages: ${messages}' +
+        'messageIds: ${messageIds}' +
         ', ' +
         'createdAt: ${createdAt}' +
         ', ' +
@@ -194,9 +181,7 @@ class Conversation {
         ', ' +
         'messageCount: ${messageCount}' +
         ', ' +
-        'isArchived: ${isArchived}' +
-        ', ' +
-        'metadata: ${metadata})';
+        'isArchived: ${isArchived})';
   }
 
   /// Creates a [Conversation] instance from JSON
@@ -222,17 +207,17 @@ class Conversation {
 }
 
 extension ConversationPropertyHelpers on Conversation {
-  bool get hasMessages => messages.isNotEmpty;
-  bool get noMessages => messages.isEmpty;
+  bool get hasWorkspaceId => workspaceId != null;
+  bool get noWorkspaceId => workspaceId == null;
+  String get workspaceIdRequired =>
+      workspaceId ?? (throw StateError('workspaceId is required but was null'));
+  bool get hasMessageIds => messageIds.isNotEmpty;
+  bool get noMessageIds => messageIds.isEmpty;
   bool get hasLastMessageAt => lastMessageAt != null;
   bool get noLastMessageAt => lastMessageAt == null;
   DateTime get lastMessageAtRequired =>
       lastMessageAt ??
       (throw StateError('lastMessageAt is required but was null'));
-  Map<String, dynamic> get metadataRequired =>
-      metadata ?? (throw StateError('metadata is required but was null'));
-  bool get hasMetadata => metadata?.isNotEmpty ?? false;
-  bool get noMetadata => metadata?.isEmpty ?? true;
 }
 
 extension ConversationSerialization on Conversation {
@@ -259,13 +244,12 @@ enum Conversation$ {
   id,
   workspaceId,
   title,
-  messages,
+  messageIds,
   createdAt,
   updatedAt,
   lastMessageAt,
   messageCount,
   isArchived,
-  metadata,
 }
 
 class ConversationPatch implements Patch<Conversation> {
@@ -351,8 +335,8 @@ class ConversationPatch implements Patch<Conversation> {
     return this;
   }
 
-  ConversationPatch withMessages(List<Message>? value) {
-    _patch[Conversation$.messages] = value;
+  ConversationPatch withMessageIds(List<String>? value) {
+    _patch[Conversation$.messageIds] = value;
     return this;
   }
 
@@ -380,28 +364,23 @@ class ConversationPatch implements Patch<Conversation> {
     _patch[Conversation$.isArchived] = value;
     return this;
   }
-
-  ConversationPatch withMetadata(Map<String, dynamic>? value) {
-    _patch[Conversation$.metadata] = value;
-    return this;
-  }
 }
 
 /// Field descriptors for [Conversation] query construction
 abstract final class ConversationFields {
   static String _$getid(Conversation e) => e.id;
   static const id = Field<Conversation, String>('id', _$getid);
-  static String _$getworkspaceId(Conversation e) => e.workspaceId;
-  static const workspaceId = Field<Conversation, String>(
+  static String? _$getworkspaceId(Conversation e) => e.workspaceId;
+  static const workspaceId = Field<Conversation, String?>(
     'workspaceId',
     _$getworkspaceId,
   );
   static String _$gettitle(Conversation e) => e.title;
   static const title = Field<Conversation, String>('title', _$gettitle);
-  static List<Message> _$getmessages(Conversation e) => e.messages;
-  static const messages = Field<Conversation, List<Message>>(
-    'messages',
-    _$getmessages,
+  static List<String> _$getmessageIds(Conversation e) => e.messageIds;
+  static const messageIds = Field<Conversation, List<String>>(
+    'messageIds',
+    _$getmessageIds,
   );
   static DateTime _$getcreatedAt(Conversation e) => e.createdAt;
   static const createdAt = Field<Conversation, DateTime>(
@@ -428,11 +407,6 @@ abstract final class ConversationFields {
     'isArchived',
     _$getisArchived,
   );
-  static Map<String, dynamic>? _$getmetadata(Conversation e) => e.metadata;
-  static const metadata = Field<Conversation, Map<String, dynamic>?>(
-    'metadata',
-    _$getmetadata,
-  );
 }
 
 extension ConversationCompareE on Conversation {
@@ -448,8 +422,8 @@ extension ConversationCompareE on Conversation {
     if (title != other.title) {
       diff['title'] = () => other.title;
     }
-    if (messages != other.messages) {
-      diff['messages'] = () => other.messages;
+    if (messageIds != other.messageIds) {
+      diff['messageIds'] = () => other.messageIds;
     }
     if (createdAt != other.createdAt) {
       diff['createdAt'] = () => other.createdAt;
@@ -465,9 +439,6 @@ extension ConversationCompareE on Conversation {
     }
     if (isArchived != other.isArchived) {
       diff['isArchived'] = () => other.isArchived;
-    }
-    if (metadata != other.metadata) {
-      diff['metadata'] = () => other.metadata;
     }
     return diff;
   }
