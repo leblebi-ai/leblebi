@@ -1,0 +1,325 @@
+# GraphQL Contracts: Connect and Chat
+
+**Created**: 2026-02-17
+**Branch**: `002-us1-connect-chat`
+**Purpose**: Client-side GraphQL abstraction over ZeroClaw REST API
+
+---
+
+## Overview
+
+This GraphQL schema provides type-safe operations for the chat interface. All operations are translated to ZeroClaw REST API calls via a GraphQL-to-REST adapter layer.
+
+**Note**: Subscriptions are simulated via HTTP polling (ZeroClaw doesn't support true push).
+
+---
+
+## Queries
+
+### GetConversation
+
+```graphql
+query GetConversation($id: ID!) {
+  conversation(id: $id) {
+    id
+    title
+    messages {
+      id
+      sender
+      content
+      timestamp
+      status
+      metadata {
+        tokenCount
+        model
+        provider
+        latencyMs
+      }
+    }
+    createdAt
+    updatedAt
+    lastMessageAt
+    messageCount
+    isArchived
+  }
+}
+```
+
+### GetConversationList
+
+```graphql
+query GetConversationList($limit: Int = 50, $cursor: String) {
+  conversations(limit: $limit, cursor: $cursor) {
+    items {
+      id
+      title
+      lastMessageAt
+      messageCount
+      isArchived
+    }
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+  }
+}
+```
+
+### GetGatewayConnection
+
+```graphql
+query GetGatewayConnection($id: ID!) {
+  gatewayConnection(id: $id) {
+    id
+    name
+    url
+    providerType
+    status
+    lastConnectedAt
+    lastError
+    lastErrorAt
+  }
+}
+```
+
+### GetActiveConnection
+
+```graphql
+query GetActiveConnection {
+  activeConnection {
+    id
+    name
+    url
+    providerType
+    status
+    bearerToken
+  }
+}
+```
+
+---
+
+## Mutations
+
+### ConnectGateway
+
+```graphql
+mutation ConnectGateway($input: ConnectGatewayInput!) {
+  connectGateway(input: $input) {
+    id
+    name
+    url
+    providerType
+    status
+    lastConnectedAt
+  }
+}
+
+input ConnectGatewayInput {
+  name: String!
+  url: String!
+  pairingCode: String!
+  providerType: AIProviderType!
+}
+```
+
+### DisconnectGateway
+
+```graphql
+mutation DisconnectGateway($connectionId: ID!) {
+  disconnectGateway(connectionId: $connectionId) {
+    id
+    status
+    lastConnectedAt
+  }
+}
+```
+
+### SendMessage
+
+```graphql
+mutation SendMessage($conversationId: ID!, $content: String!) {
+  sendMessage(conversationId: $conversationId, content: $content) {
+    id
+    sender
+    content
+    timestamp
+    status
+    metadata {
+      tokenCount
+      model
+      provider
+      latencyMs
+    }
+  }
+}
+```
+
+### UpdateMessageStatus
+
+```graphql
+mutation UpdateMessageStatus($id: ID!, $status: MessageStatus!) {
+  updateMessageStatus(id: $id, status: $status) {
+    id
+    status
+    errorMessage
+    retryCount
+  }
+}
+```
+
+### CreateDefaultConversation
+
+```graphql
+mutation CreateDefaultConversation {
+  createDefaultConversation {
+    id
+    title
+    createdAt
+    messageCount
+  }
+}
+```
+
+### TestConnection
+
+```graphql
+mutation TestConnection($connectionId: ID!) {
+  testConnection(connectionId: $connectionId) {
+    success
+    message
+    latencyMs
+  }
+}
+```
+
+---
+
+## Subscriptions (Simulated via Polling)
+
+### MessageReceived
+
+```graphql
+subscription MessageReceived($conversationId: ID!) {
+  messageReceived(conversationId: $conversationId) {
+    id
+    sender
+    content
+    timestamp
+    status
+    metadata {
+      tokenCount
+      model
+      provider
+      latencyMs
+    }
+  }
+}
+```
+
+**Polling Implementation**: Query `GetConversation` every 2 seconds, compare `lastMessageAt` and `messageCount` to detect new messages.
+
+---
+
+### ConversationUpdated
+
+```graphql
+subscription ConversationUpdated($conversationId: ID!) {
+  conversationUpdated(conversationId: $conversationId) {
+    id
+    title
+    lastMessageAt
+    messageCount
+    isArchived
+  }
+}
+```
+
+**Polling Implementation**: Query `GetConversation` every 2 seconds, compare fields to detect updates.
+
+---
+
+### ConnectionStatusChanged
+
+```graphql
+subscription ConnectionStatusChanged {
+  connectionStatusChanged {
+    connectionId
+    status
+    lastError
+    lastErrorAt
+    lastConnectedAt
+  }
+}
+```
+
+**Polling Implementation**: Query `GetActiveConnection` every 1 second, compare `status` field to detect changes.
+
+---
+
+## Enums
+
+```graphql
+enum AIProviderType {
+  ZERO_CLAW
+  PICO_CLAW
+  OPEN_CLAW
+}
+
+enum MessageSender {
+  USER
+  AI
+  SYSTEM
+}
+
+enum MessageStatus {
+  PENDING
+  SENT
+  DELIVERED
+  FAILED
+}
+
+enum ConnectionStatus {
+  DISCONNECTED
+  CONNECTING
+  CONNECTED
+  ERROR
+  RECONNECTING
+}
+```
+
+---
+
+## Scalars
+
+```graphql
+scalar DateTime
+```
+
+---
+
+## REST API Mapping
+
+| GraphQL Operation | ZeroClaw REST Endpoint | Method |
+|-------------------|------------------------|--------|
+| `connectGateway` | `/pair` | POST |
+| `sendMessage` | `/webhook` | POST |
+| `testConnection` | `/health` | GET |
+| `GetConversation` | N/A (local cache) | - |
+| `GetGatewayConnection` | N/A (local cache) | - |
+
+**Note**: Queries read from local Hive cache. Mutations write to Hive and sync with ZeroClaw REST API.
+
+---
+
+## Error Codes
+
+| Code | Description | Recovery |
+|------|-------------|----------|
+| `CONNECTION_FAILED` | Gateway unreachable | Retry with backoff, show error |
+| `AUTH_FAILED` | Invalid/expired token | Re-pair with new code |
+| `MESSAGE_TOO_LONG` | Content > 4000 chars | Truncate or show validation error |
+| `RATE_LIMITED` | Too many requests | Wait, then retry |
+| `NETWORK_ERROR` | No internet connection | Queue message, retry later |

@@ -3,6 +3,8 @@
 Auto-generated from all feature plans. Last updated: 2026-02-17
 
 ## Active Technologies
+- Dart 3.10.8+ with Flutter SDK + zuraffa (^2.1.0), zorphy_annotation (^1.6.1), get_it (DI), http/http2 (network), web_socket_channel (polling simulation), hive (local storage), flutter_secure_storage (token storage) (002-us1-connect-chat)
+- Hive (conversation history, messages, gateway config), flutter_secure_storage (bearer tokens) (002-us1-connect-chat)
 
 - Dart 3.10.8+ with Flutter SDK + Flutter SDK, zuraffa (^2.1.0), zorphy_annotation (^1.6.1), get_it (DI), http/http2 (network), web_socket_channel (real-time) (001-zeroclaw-integration)
 
@@ -22,6 +24,7 @@ tests/
 Dart 3.10.8+ with Flutter SDK: Follow standard conventions
 
 ## Recent Changes
+- 002-us1-connect-chat: Added Dart 3.10.8+ with Flutter SDK + zuraffa (^2.1.0), zorphy_annotation (^1.6.1), get_it (DI), http/http2 (network), web_socket_channel (polling simulation), hive (local storage), flutter_secure_storage (token storage)
 
 - 001-zeroclaw-integration: Added Dart 3.10.8+ with Flutter SDK + Flutter SDK, zuraffa (^2.1.0), zorphy_annotation (^1.6.1), get_it (DI), http/http2 (network), web_socket_channel (real-time)
 
