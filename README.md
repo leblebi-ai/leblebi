@@ -38,14 +38,34 @@ Check out the current state of the chat interface:
 - **CI/CD**:
   - Automated macOS binary builds and releases via GitHub Actions.
 
-### 🚀 Upcoming Features
-- [ ] **Message History**: Enhanced loading and pagination of past conversations.
+### 🚀 Roadmap & Upcoming Features
+
+#### 🏢 Multi-Agent Workspace Management (US2)
+Power users can maintain separate AI agent contexts for different use cases.
+- [ ] **Workspace CRUD**: Create, rename, and delete multiple agent workspaces.
+- [ ] **Context Switching**: Seamlessly switch between workspaces, preserving conversation history and state.
+- [ ] **Identity Customization**: Configure distinct agent identities and personalities per workspace.
+- [ ] **Trash Management**: Recover deleted workspaces within 30 days (soft delete).
+
+#### 🛠️ Tool & Integration Management (US3)
+Extend the AI's capabilities with tools and external integrations.
+- [ ] **Tool Discovery**: View all available built-in tools (File Ops, Shell, Browser) and integrations.
+- [ ] **Workspace Scoping**: Enable/disable tools per workspace.
+- [ ] **Permission Control**: Configure granular scopes (e.g., allowed directory paths) for file operations.
+- [ ] **Integration Status**: Manage connection status for external services (e.g., Composio).
+
+#### 🧠 Conversation Memory & Search (US4)
+Retrieve past information and context efficiently.
+- [ ] **Global Search**: Natural language search across all conversation history.
+- [ ] **Hybrid Search**: Combine keyword matching with semantic similarity for better results.
+- [ ] **Context Navigation**: Jump directly to the message context from search results.
+- [ ] **Workspace Filtering**: Identify which workspace a search result belongs to.
+
+#### 🎨 UI/UX Improvements
+- [ ] **Message History**: Enhanced loading and pagination (infinite scroll).
 - [ ] **Auto-Scroll**: Smart scrolling to the latest message.
 - [ ] **Rich Text Support**: Markdown rendering for AI responses and code syntax highlighting.
-- [ ] **Multiple Conversations**: Create, switch, and manage multiple chat sessions.
 - [ ] **Settings**: User preferences for theme, notifications, and more.
-- [ ] **Tool Integration**: Support for executing and viewing tool calls/outputs.
-- [ ] **Workspace Management**: Switch between different workspaces.
 
 ## 🛠️ Getting Started
 
