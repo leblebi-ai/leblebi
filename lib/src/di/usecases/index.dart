@@ -17,6 +17,10 @@ import 'get_gateway_connection_list_usecase_di.dart';
 import 'update_tool_configuration_usecase_di.dart';
 import 'get_tool_configuration_list_usecase_di.dart';
 import 'get_tool_configuration_usecase_di.dart';
+import 'connect_gateway_usecase_di.dart';
+import 'send_message_usecase_di.dart';
+import 'get_message_list_usecase_di.dart';
+import 'create_message_usecase_di.dart';
 
 void registerAllUseCases(GetIt getIt) {
   registerGetWorkspaceListUseCase(getIt);
@@ -48,4 +52,10 @@ void registerAllUseCases(GetIt getIt) {
   registerGetToolConfigurationListUseCase(getIt);
 
   registerGetToolConfigurationUseCase(getIt);
+
+  registerConnectGatewayUseCase(getIt);
+  registerSendMessageUseCase(getIt);
+  registerGetMessageListUseCase(getIt);
+  registerCreateMessageUseCase(getIt);
 }
+

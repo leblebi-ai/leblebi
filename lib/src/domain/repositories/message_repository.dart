@@ -3,6 +3,7 @@
 
 import 'package:zuraffa/zuraffa.dart';
 import '../entities/message/message.dart';
+import '../entities/gateway_connection/gateway_connection.dart';
 
 abstract class MessageRepository {
   Future<Message> get(QueryParams<Message> params);
@@ -12,4 +13,5 @@ abstract class MessageRepository {
   Future<void> delete(DeleteParams<String> params);
   Stream<Message> watch(QueryParams<Message> params);
   Stream<List<Message>> watchList(ListQueryParams<Message> params);
+  Future<Message> sendToAI(Message message, GatewayConnection connection);
 }
