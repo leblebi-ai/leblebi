@@ -50,7 +50,7 @@ class _ChatInputState extends State<ChatInput> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<ChatViewModel>();
-    
+
     return Container(
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
@@ -73,7 +73,10 @@ class _ChatInputState extends State<ChatInput> {
                 decoration: const InputDecoration(
                   hintText: 'Type a message...',
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                 ),
                 textCapitalization: TextCapitalization.sentences,
                 minLines: 1,

@@ -15,4 +15,3 @@ void setupDependencies(GetIt getIt) {
   registerAllDataSources(getIt);
   registerAllRepositories(getIt);
 }
-

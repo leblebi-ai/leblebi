@@ -7,33 +7,23 @@ part of 'workspace.dart';
 // **************************************************************************
 
 Workspace _$WorkspaceFromJson(Map<String, dynamic> json) => Workspace(
-  id: json['id'] as String,
-  name: json['name'] as String,
-  description: json['description'] as String?,
-  gatewayConnectionId: json['gatewayConnectionId'] as String?,
-  identityConfig: IdentityConfig.fromJson(
-    json['identityConfig'] as Map<String, dynamic>,
+  identity: WorkspaceIdentity.fromJson(
+    json['identity'] as Map<String, dynamic>,
   ),
-  toolConfigurations: (json['toolConfigurations'] as List<dynamic>)
-      .map((e) => ToolConfiguration.fromJson(e as Map<String, dynamic>))
-      .toList(),
-  activeConversationId: json['activeConversationId'] as String?,
+  gatewayConnectionId: json['gatewayConnectionId'] as String,
   createdAt: DateTime.parse(json['createdAt'] as String),
-  updatedAt: DateTime.parse(json['updatedAt'] as String),
-  isDeleted: json['isDeleted'] as bool,
+  updatedAt: json['updatedAt'] == null
+      ? null
+      : DateTime.parse(json['updatedAt'] as String),
+  deletedAt: json['deletedAt'] == null
+      ? null
+      : DateTime.parse(json['deletedAt'] as String),
 );
 
 Map<String, dynamic> _$WorkspaceToJson(Workspace instance) => <String, dynamic>{
-  'id': instance.id,
-  'name': instance.name,
-  'description': instance.description,
+  'identity': instance.identity.toJson(),
   'gatewayConnectionId': instance.gatewayConnectionId,
-  'identityConfig': instance.identityConfig.toJson(),
-  'toolConfigurations': instance.toolConfigurations
-      .map((e) => e.toJson())
-      .toList(),
-  'activeConversationId': instance.activeConversationId,
   'createdAt': instance.createdAt.toIso8601String(),
-  'updatedAt': instance.updatedAt.toIso8601String(),
-  'isDeleted': instance.isDeleted,
+  'updatedAt': instance.updatedAt?.toIso8601String(),
+  'deletedAt': instance.deletedAt?.toIso8601String(),
 };

@@ -27,7 +27,7 @@ class ChatViewModel extends ChangeNotifier {
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
-  
+
   bool _isSending = false;
   bool get isSending => _isSending;
 
@@ -45,10 +45,10 @@ class ChatViewModel extends ChangeNotifier {
         // For MVP, we load all messages as there is only one conversation usually
       );
       _messages = await _getMessageListUseCase.execute(params, null);
-      
+
       // Sort messages by timestamp if needed
       _messages.sort((a, b) => a.timestamp.compareTo(b.timestamp));
-      
+
       _isLoading = false;
       notifyListeners();
     } catch (e) {
@@ -77,37 +77,41 @@ class ChatViewModel extends ChangeNotifier {
       status: MessageStatus.pending,
       retryCount: 0,
     );
-    
+
     _messages.add(optimisticMessage);
     notifyListeners();
 
     try {
       final params = SendMessageParams(message: optimisticMessage);
       final sentMessage = await _sendMessageUseCase.execute(params, null);
-      
+
       // 3. Update user message status to sent
       final index = _messages.indexWhere((m) => m.id == tempId);
       if (index != -1) {
-        _messages[index] = optimisticMessage.copyWith(status: MessageStatus.sent);
+        _messages[index] = optimisticMessage.copyWith(
+          status: MessageStatus.sent,
+        );
       }
-      
+
       // 4. Add AI response
       _messages.add(sentMessage);
-      
+
       // Sort again just in case
       _messages.sort((a, b) => a.timestamp.compareTo(b.timestamp));
-      
+
       _isSending = false;
       notifyListeners();
     } catch (e) {
       debugPrint('ChatViewModel sendMessage error: $e');
       _isSending = false;
       _error = e.toString();
-      
+
       // Mark user message as failed
       final index = _messages.indexWhere((m) => m.id == tempId);
       if (index != -1) {
-        _messages[index] = optimisticMessage.copyWith(status: MessageStatus.failed);
+        _messages[index] = optimisticMessage.copyWith(
+          status: MessageStatus.failed,
+        );
       }
       notifyListeners();
     }
@@ -119,7 +123,7 @@ class ChatViewModel extends ChangeNotifier {
         ListQueryParams<GatewayConnection>(),
         null,
       );
-      
+
       for (final connection in connections) {
         await _deleteGatewayConnectionUseCase.execute(
           DeleteParams(id: connection.id),

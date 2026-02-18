@@ -11,7 +11,6 @@ part 'message.g.dart';
 /// Message entity
 @Zorphy(generateJson: true, generateCompareTo: true, generateFilter: true)
 abstract class $Message {
-
   String get id;
   String get conversationId;
   MessageSender get sender;
@@ -22,4 +21,3 @@ abstract class $Message {
   String? get errorMessage;
   $MessageMetadata? get metadata;
 }
-

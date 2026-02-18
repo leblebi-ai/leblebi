@@ -19,12 +19,12 @@ class MessageLocalDataSource with Loggable, FailureHandler {
     // Assume params.id is what we need or find first match
     // Simple filter by ID if possible
     // Since we don't have easy query parsing, iterate.
-    
+
     // Check if ID is provided in some way (not standard in QueryParams without custom logic)
     // We'll iterate.
-    
+
     if (box.isEmpty) throw NotFoundFailure('No messages found');
-    
+
     // Return first
     return Message.fromJson(jsonDecode(box.values.first));
   }
@@ -34,12 +34,12 @@ class MessageLocalDataSource with Loggable, FailureHandler {
     final messages = box.values
         .map((e) => Message.fromJson(jsonDecode(e)))
         .toList();
-        
+
     // Filter by conversationId if present in params (how?)
     // Assuming params might have some criteria.
     // For now, return all (MVP: only one conversation anyway?)
     // Or filter manually if I knew how to access params.where.
-    
+
     return messages;
   }
 
@@ -53,9 +53,9 @@ class MessageLocalDataSource with Loggable, FailureHandler {
     final box = await _box;
     final id = params.id;
     final jsonStr = box.get(id);
-    
+
     if (jsonStr == null) throw NotFoundFailure('Message not found: $id');
-    
+
     // Simple overwrite logic for now as partial update is hard
     throw UnimplementedError('Message update not implemented');
   }
@@ -67,16 +67,14 @@ class MessageLocalDataSource with Loggable, FailureHandler {
 
   Stream<List<Message>> watchList(ListQueryParams<Message> params) async* {
     final box = await _box;
-    
+
     List<Message> filter() {
-      return box.values
-          .map((e) => Message.fromJson(jsonDecode(e)))
-          .toList();
+      return box.values.map((e) => Message.fromJson(jsonDecode(e))).toList();
       // Add filtering here later
     }
-    
+
     yield filter();
-    
+
     await for (final _ in box.watch()) {
       yield filter();
     }

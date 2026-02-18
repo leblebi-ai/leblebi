@@ -6,4 +6,3 @@ void registerCoreDependencies(GetIt getIt) {
   getIt.registerLazySingleton(() => const FlutterSecureStorage());
   getIt.registerLazySingleton(() => ZeroClawRestApi());
 }
-

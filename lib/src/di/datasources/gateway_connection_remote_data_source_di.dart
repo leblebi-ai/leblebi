@@ -8,4 +8,3 @@ void registerGatewayConnectionRemoteDataSource(GetIt getIt) {
     () => GatewayConnectionRemoteDataSource(getIt<ZeroClawRestApi>()),
   );
 }
-

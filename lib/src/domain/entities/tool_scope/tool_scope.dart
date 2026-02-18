@@ -9,10 +9,8 @@ part 'tool_scope.g.dart';
 /// ToolScope entity
 @Zorphy(generateJson: true, generateCompareTo: true, generateFilter: true)
 abstract class $ToolScope {
-
   List<String>? get allowedDirectories;
   List<String>? get allowedDomains;
   List<String>? get allowedCommands;
   bool get workspaceOnly;
 }
-

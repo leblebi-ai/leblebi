@@ -50,7 +50,7 @@ class DataGatewayConnectionRepository
   Future<GatewayConnection> pair(String url, String pairingCode) async {
     final response = await _remoteDataSource.pair(url, pairingCode);
     final token = response['token'] as String;
-    
+
     // Create new GatewayConnection object
     final connection = GatewayConnection(
       id: DateTime.now().millisecondsSinceEpoch.toString(), // Generate ID
@@ -69,4 +69,3 @@ class DataGatewayConnectionRepository
     return _localDataSource.create(connection);
   }
 }
-

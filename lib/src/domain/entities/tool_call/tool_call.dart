@@ -10,7 +10,6 @@ part 'tool_call.g.dart';
 /// ToolCall entity
 @Zorphy(generateJson: true, generateCompareTo: true, generateFilter: true)
 abstract class $ToolCall {
-
   String get toolName;
   Map<String, dynamic> get arguments;
   ToolCallStatus get status;
@@ -18,4 +17,3 @@ abstract class $ToolCall {
   String? get error;
   DateTime? get executedAt;
 }
-

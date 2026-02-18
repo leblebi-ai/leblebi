@@ -7,7 +7,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   setupDependencies(getIt);
-  
+
   runApp(const MyApp());
 }
 

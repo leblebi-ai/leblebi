@@ -9,17 +9,16 @@ class ZeroClawRestApi {
   Future<Map<String, dynamic>> pair(String baseUrl, String code) async {
     final response = await _client.post(
       Uri.parse('$baseUrl/pair'),
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Pairing-Code': code,
-      },
+      headers: {'Content-Type': 'application/json', 'X-Pairing-Code': code},
       body: jsonEncode({}),
     );
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body) as Map<String, dynamic>;
     } else {
-      print('ZeroClaw API Error (pair): ${response.statusCode} ${response.body}');
+      print(
+        'ZeroClaw API Error (pair): ${response.statusCode} ${response.body}',
+      );
       throw Exception('Pairing failed: ${response.body}');
     }
   }
@@ -49,7 +48,9 @@ class ZeroClawRestApi {
         return {'content': response.body};
       }
     } else {
-      print('ZeroClaw API Error (sendMessage): ${response.statusCode} ${response.body}');
+      print(
+        'ZeroClaw API Error (sendMessage): ${response.statusCode} ${response.body}',
+      );
       throw Exception('Failed to send message: ${response.body}');
     }
   }

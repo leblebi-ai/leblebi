@@ -11,4 +11,3 @@ class GatewayConnectionRemoteDataSource with Loggable, FailureHandler {
     return _api.pair(url, pairingCode);
   }
 }
-

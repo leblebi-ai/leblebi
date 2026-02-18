@@ -11,7 +11,10 @@ class MessageRemoteDataSource with Loggable, FailureHandler {
 
   final ZeroClawRestApi _api;
 
-  Future<Message> sendToAI(Message message, GatewayConnection connection) async {
+  Future<Message> sendToAI(
+    Message message,
+    GatewayConnection connection,
+  ) async {
     if (connection.bearerToken == null) {
       throw Exception('Gateway connection missing token');
     }
@@ -21,12 +24,12 @@ class MessageRemoteDataSource with Loggable, FailureHandler {
       connection.bearerToken!,
       message.content,
     );
-    
-    // The ZeroClaw API might return different fields. 
+
+    // The ZeroClaw API might return different fields.
     // Usually it returns { "content": "..." } or { "message": "..." }
     // Let's try to extract from common fields.
     String replyContent = 'No response content';
-    
+
     if (response.containsKey('content')) {
       replyContent = response['content'] as String;
     } else if (response.containsKey('message')) {
@@ -36,10 +39,10 @@ class MessageRemoteDataSource with Loggable, FailureHandler {
     } else if (response.containsKey('reply')) {
       replyContent = response['reply'] as String;
     } else {
-       // Try to dump the whole map if it's small
-       replyContent = response.toString();
+      // Try to dump the whole map if it's small
+      replyContent = response.toString();
     }
-    
+
     // Create AI response message
     return Message(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -53,4 +56,3 @@ class MessageRemoteDataSource with Loggable, FailureHandler {
     );
   }
 }
-

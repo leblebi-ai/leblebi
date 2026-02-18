@@ -2,6 +2,9 @@
 /// Generated at: 2026-02-17T10:47:21.917022
 
 enum ConnectionStatus {
-   disconnected,connecting,connected,error,reconnecting
+  disconnected,
+  connecting,
+  connected,
+  error,
+  reconnecting,
 }
-

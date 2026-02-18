@@ -9,7 +9,6 @@ part 'attachment.g.dart';
 /// Attachment entity
 @Zorphy(generateJson: true, generateCompareTo: true, generateFilter: true)
 abstract class $Attachment {
-
   String get id;
   String get filename;
   String get mimeType;
@@ -17,4 +16,3 @@ abstract class $Attachment {
   String? get localPath;
   String? get url;
 }
-

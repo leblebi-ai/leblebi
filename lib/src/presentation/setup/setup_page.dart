@@ -46,9 +46,9 @@ class _SetupViewState extends State<_SetupView> {
       );
 
       if (success && mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const ChatPage()),
-        );
+        Navigator.of(
+          context,
+        ).pushReplacement(MaterialPageRoute(builder: (_) => const ChatPage()));
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

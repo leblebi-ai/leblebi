@@ -27,18 +27,18 @@ class GatewayConnectionLocalDataSource
     if (box.isEmpty) {
       throw NotFoundFailure('No gateway connection found');
     }
-    
+
     // For MVP, return first connection found (assuming only one active)
     final jsonStr = box.values.first;
     final jsonMap = jsonDecode(jsonStr) as Map<String, dynamic>;
     final id = jsonMap['id'] as String;
-    
+
     // Retrieve token securely
     final token = await _secureStorage.read(key: 'token_$id');
     if (token != null) {
       jsonMap['bearerToken'] = token;
     }
-    
+
     return GatewayConnection.fromJson(jsonMap);
   }
 
@@ -48,18 +48,18 @@ class GatewayConnectionLocalDataSource
   ) async {
     final box = await _box;
     final connections = <GatewayConnection>[];
-    
+
     for (final jsonStr in box.values) {
       final jsonMap = jsonDecode(jsonStr) as Map<String, dynamic>;
       final id = jsonMap['id'] as String;
-      
+
       final token = await _secureStorage.read(key: 'token_$id');
       if (token != null) {
         jsonMap['bearerToken'] = token;
       }
       connections.add(GatewayConnection.fromJson(jsonMap));
     }
-    
+
     return connections;
   }
 
@@ -67,10 +67,13 @@ class GatewayConnectionLocalDataSource
   Future<GatewayConnection> create(GatewayConnection gatewayConnection) async {
     final box = await _box;
     final token = gatewayConnection.bearerToken;
-    
+
     if (token != null) {
       try {
-        await _secureStorage.write(key: 'token_${gatewayConnection.id}', value: token);
+        await _secureStorage.write(
+          key: 'token_${gatewayConnection.id}',
+          value: token,
+        );
       } catch (e) {
         // Fallback or rethrow with clear message
         print('SecureStorage Write Error: $e');
@@ -79,10 +82,10 @@ class GatewayConnectionLocalDataSource
         rethrow;
       }
     }
-    
+
     final jsonMap = gatewayConnection.toJson();
     jsonMap['bearerToken'] = null; // Don't store token in Hive
-    
+
     await box.put(gatewayConnection.id, jsonEncode(jsonMap));
     return gatewayConnection;
   }
@@ -97,7 +100,7 @@ class GatewayConnectionLocalDataSource
     // Implementing full partial update logic manually is complex.
     // For now, throw unimplemented as we rely on create (overwrite) for updates mostly.
     // Or check if params.id exists and overwrite.
-    
+
     throw UnimplementedError('Update not implemented yet');
   }
 
@@ -109,4 +112,3 @@ class GatewayConnectionLocalDataSource
     await _secureStorage.delete(key: 'token_$id');
   }
 }
-

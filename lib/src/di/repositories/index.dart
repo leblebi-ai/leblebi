@@ -12,9 +12,8 @@ void registerAllRepositories(GetIt getIt) {
   registerConversationRepository(getIt);
 
   registerGatewayConnectionRepository(getIt);
-  
+
   registerMessageRepository(getIt);
 
   registerToolConfigurationRepository(getIt);
 }
-

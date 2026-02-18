@@ -7,4 +7,3 @@ void registerGatewayConnectionLocalDataSource(GetIt getIt) {
     () => GatewayConnectionLocalDataSource(getIt<FlutterSecureStorage>()),
   );
 }
-

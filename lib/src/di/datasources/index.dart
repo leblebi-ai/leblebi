@@ -21,5 +21,3 @@ void registerAllDataSources(GetIt getIt) {
 
   registerToolConfigurationRemoteDataSource(getIt);
 }
-
-

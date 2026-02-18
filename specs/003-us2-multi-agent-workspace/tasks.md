@@ -42,9 +42,9 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 [P] Create Workspace entity using `zuraffa_entity_create --name Workspace --json --compare --fields "identity:WorkspaceIdentity" --fields "gatewayConnectionId:String" --fields "createdAt:DateTime" --fields "updatedAt:DateTime?" --fields "deletedAt:DateTime?"` in lib/src/domain/entities/workspace.dart
-- [ ] T005 [P] Create WorkspaceIdentity value object using `zuraffa_entity_create --name WorkspaceIdentity --json --fields "name:String" --fields "persona:String?" --fields "systemPrompt:String?" --fields "toolConfigs:Map<String,dynamic>?"` in lib/src/domain/entities/workspace_identity.dart
-- [ ] T006 Run `zuraffa_build` to generate .g.dart serialization files for Workspace and WorkspaceIdentity
+- [x] T004 [P] Create Workspace entity using `zuraffa_entity_create --name Workspace --json --compare --fields "identity:WorkspaceIdentity" --fields "gatewayConnectionId:String" --fields "createdAt:DateTime" --fields "updatedAt:DateTime?" --fields "deletedAt:DateTime?"` in lib/src/domain/entities/workspace.dart
+- [x] T005 [P] Create WorkspaceIdentity value object using `zuraffa_entity_create --name WorkspaceIdentity --json --fields "name:String" --fields "persona:String?" --fields "systemPrompt:String?" --fields "toolConfigs:Map<String,dynamic>?"` in lib/src/domain/entities/workspace_identity.dart
+- [x] T006 Run `zuraffa_build` to generate .g.dart serialization files for Workspace and WorkspaceIdentity
 - [ ] T007 [P] Create WorkspaceRepository interface in lib/src/domain/repositories/workspace_repository.dart
 - [ ] T008 [P] Extend ZeroClawRestApi with workspace endpoints in lib/src/data/datasources/remote/zeroclaw_workspace_api.dart (endpoints: GET/POST/PUT/DELETE /workspaces)
 - [ ] T009 [P] Create WorkspaceRepositoryImpl in lib/src/data/repositories/workspace_repository_impl.dart (calls ZeroClaw API only, no Hive)

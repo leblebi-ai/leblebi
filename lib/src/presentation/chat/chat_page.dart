@@ -19,7 +19,7 @@ class ChatPage extends StatelessWidget {
     // For MVP, assume conversationId is fixed or passed.
     // Let's create a default one or fetch it.
     // But ChatViewModel needs to be initialized.
-    
+
     return ChangeNotifierProvider(
       create: (_) => ChatViewModel(
         getIt<GetMessageListUseCase>(),
@@ -55,7 +55,9 @@ class _ChatView extends StatelessWidget {
                   context: context,
                   builder: (context) => AlertDialog(
                     title: const Text('Disconnect'),
-                    content: const Text('Are you sure you want to disconnect from this gateway?'),
+                    content: const Text(
+                      'Are you sure you want to disconnect from this gateway?',
+                    ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context, false),
@@ -63,12 +65,15 @@ class _ChatView extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () => Navigator.pop(context, true),
-                        child: const Text('Disconnect', style: TextStyle(color: Colors.red)),
+                        child: const Text(
+                          'Disconnect',
+                          style: TextStyle(color: Colors.red),
+                        ),
                       ),
                     ],
                   ),
                 );
-                
+
                 if (confirm == true && context.mounted) {
                   await viewModel.disconnect();
                   if (context.mounted) {
@@ -102,25 +107,26 @@ class _ChatView extends StatelessWidget {
             child: viewModel.isLoading && messages.isEmpty
                 ? const Center(child: CircularProgressIndicator())
                 : messages.isEmpty
-                    ? const Center(child: Text('No messages yet'))
-                    : ListView.builder(
-                        reverse: true, // Show latest at bottom? No, usually reverse: true means bottom up.
-                        // But messages are sorted by timestamp asc.
-                        // If reverse: true, index 0 is at bottom.
-                        // So index 0 should be latest message.
-                        // Our sort is asc (oldest first).
-                        // So last element is latest.
-                        // So index 0 of ListView (bottom) should be last element of list.
-                        // So we should reverse the list or access it reversed.
-                        // Or just use reverse: false and scroll to bottom.
-                        // reverse: true is better for chat.
-                        // So we need to reverse the list for display.
-                        itemCount: messages.length,
-                        itemBuilder: (context, index) {
-                          final message = messages[messages.length - 1 - index];
-                          return MessageBubble(message: message);
-                        },
-                      ),
+                ? const Center(child: Text('No messages yet'))
+                : ListView.builder(
+                    reverse:
+                        true, // Show latest at bottom? No, usually reverse: true means bottom up.
+                    // But messages are sorted by timestamp asc.
+                    // If reverse: true, index 0 is at bottom.
+                    // So index 0 should be latest message.
+                    // Our sort is asc (oldest first).
+                    // So last element is latest.
+                    // So index 0 of ListView (bottom) should be last element of list.
+                    // So we should reverse the list or access it reversed.
+                    // Or just use reverse: false and scroll to bottom.
+                    // reverse: true is better for chat.
+                    // So we need to reverse the list for display.
+                    itemCount: messages.length,
+                    itemBuilder: (context, index) {
+                      final message = messages[messages.length - 1 - index];
+                      return MessageBubble(message: message);
+                    },
+                  ),
           ),
           if (viewModel.error != null)
             Padding(

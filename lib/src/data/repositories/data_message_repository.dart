@@ -9,10 +9,7 @@ import '../data_sources/message/message_remote_data_source.dart';
 class DataMessageRepository
     with Loggable, FailureHandler
     implements MessageRepository {
-  DataMessageRepository(
-    this._localDataSource,
-    this._remoteDataSource,
-  );
+  DataMessageRepository(this._localDataSource, this._remoteDataSource);
 
   final MessageLocalDataSource _localDataSource;
   final MessageRemoteDataSource _remoteDataSource;
@@ -56,14 +53,17 @@ class DataMessageRepository
   }
 
   @override
-  Future<Message> sendToAI(Message message, GatewayConnection connection) async {
+  Future<Message> sendToAI(
+    Message message,
+    GatewayConnection connection,
+  ) async {
     // 1. Save user message locally
     final userMsg = await _localDataSource.create(message);
-    
+
     try {
       // 2. Send to AI
       final aiMsg = await _remoteDataSource.sendToAI(userMsg, connection);
-      
+
       // 3. Save AI response locally
       return await _localDataSource.create(aiMsg);
     } catch (e) {

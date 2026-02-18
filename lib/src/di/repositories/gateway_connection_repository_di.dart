@@ -13,4 +13,3 @@ void registerGatewayConnectionRepository(GetIt getIt) {
     ),
   );
 }
-

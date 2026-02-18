@@ -9,7 +9,6 @@ part 'conversation.g.dart';
 /// Conversation entity
 @Zorphy(generateJson: true, generateCompareTo: true, generateFilter: true)
 abstract class $Conversation {
-
   String get id;
   String? get workspaceId;
   String get title;
@@ -20,4 +19,3 @@ abstract class $Conversation {
   int get messageCount;
   bool get isArchived;
 }
-

@@ -10,11 +10,9 @@ part 'message_metadata.g.dart';
 /// MessageMetadata entity
 @Zorphy(generateJson: true, generateCompareTo: true, generateFilter: true)
 abstract class $MessageMetadata {
-
   int? get tokenCount;
   String? get model;
   String? get provider;
   int? get latencyMs;
   List<$ToolCall>? get toolCalls;
 }
-

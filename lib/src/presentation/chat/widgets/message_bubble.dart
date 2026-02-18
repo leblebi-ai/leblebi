@@ -23,10 +23,7 @@ class MessageBubble extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              message.content,
-              style: const TextStyle(fontSize: 16),
-            ),
+            Text(message.content, style: const TextStyle(fontSize: 16)),
             const SizedBox(height: 4),
             Row(
               mainAxisSize: MainAxisSize.min,
@@ -41,8 +38,8 @@ class MessageBubble extends StatelessWidget {
                     message.status == MessageStatus.sent
                         ? Icons.check
                         : message.status == MessageStatus.failed
-                            ? Icons.error
-                            : Icons.access_time,
+                        ? Icons.error
+                        : Icons.access_time,
                     size: 12,
                     color: message.status == MessageStatus.failed
                         ? Colors.red

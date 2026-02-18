@@ -10,7 +10,6 @@ part 'gateway_connection.g.dart';
 /// GatewayConnection entity
 @Zorphy(generateJson: true, generateCompareTo: true, generateFilter: true)
 abstract class $GatewayConnection {
-
   String get id;
   AIProviderType get providerType;
   String get name;
@@ -24,4 +23,3 @@ abstract class $GatewayConnection {
   DateTime get createdAt;
   DateTime get updatedAt;
 }
-

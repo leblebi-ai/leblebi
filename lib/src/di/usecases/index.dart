@@ -58,4 +58,3 @@ void registerAllUseCases(GetIt getIt) {
   registerGetMessageListUseCase(getIt);
   registerCreateMessageUseCase(getIt);
 }
-
