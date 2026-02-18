@@ -1,6 +1,6 @@
 # Leblebi (ZeroClaw Client)
 
-[![WIP](https://img.shields.io/badge/status-WIP-orange.svg)](https://github.com/your-username/leblebi)
+[![WIP](https://img.shields.io/badge/status-WIP-orange.svg)](https://github.com/leblebi-ai/leblebi)
 
 **Leblebi** is a Flutter-based client application for **ZeroClaw**, designed to provide a seamless chat interface and gateway connection management.
 
@@ -10,7 +10,7 @@
 
 Check out the current state of the chat interface:
 
-<video src="lebleli_zero_claw.mp4" controls="controls" style="max-width: 100%;">
+<video src="https://github.com/user-attachments/assets/46863fd7-c031-434d-95de-ce5f17aa835d" controls="controls" style="max-width: 100%;">
   Your browser does not support the video tag.
 </video>
 
