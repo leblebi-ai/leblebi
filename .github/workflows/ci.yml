@@ -51,7 +51,7 @@ jobs:
             command: flutter build linux --release
           - os: macos-latest
             target: macos
-            command: flutter build macos --release
+            command: flutter build macos --release --no-codesign
           - os: windows-latest
             target: windows
             command: flutter build windows --release
