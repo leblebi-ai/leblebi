@@ -1,0 +1,389 @@
+# GraphQL Schema: Multi-Agent Workspace Management
+
+**Feature**: 003-us2-multi-agent-workspace  
+**Date**: 2026-02-18  
+**Type**: Client-side GraphQL abstraction (simulated subscriptions via polling)
+
+---
+
+## Schema Definition
+
+```graphql
+# Workspace Operations
+
+type Workspace {
+  id: ID!
+  identity: WorkspaceIdentity!
+  gatewayConnectionId: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime
+  deletedAt: DateTime
+  isActive: Boolean!
+  conversations(limit: Int, offset: Int): [Conversation!]!
+}
+
+type WorkspaceIdentity {
+  name: String!
+  persona: String
+  systemPrompt: String
+  toolConfigs: JSON
+}
+
+input CreateWorkspaceInput {
+  name: String!
+  persona: String
+  systemPrompt: String
+  gatewayConnectionId: ID!
+}
+
+input UpdateWorkspaceInput {
+  id: ID!
+  name: String
+  persona: String
+  systemPrompt: String
+}
+
+input DeleteWorkspaceInput {
+  id: ID!
+}
+
+input RestoreWorkspaceInput {
+  id: ID!
+}
+
+# Queries
+
+type Query {
+  # Get all active workspaces
+  getWorkspaces: [Workspace!]!
+  
+  # Get workspace by ID
+  getWorkspace(id: ID!): Workspace
+  
+  # Get all workspaces including deleted (for Trash view)
+  getWorkspacesWithDeleted: [Workspace!]!
+  
+  # Get trash workspaces (deleted but not purged)
+  getTrashWorkspaces: [Workspace!]!
+}
+
+# Mutations
+
+type Mutation {
+  # Create new workspace
+  createWorkspace(input: CreateWorkspaceInput!): Workspace!
+  
+  # Update workspace
+  updateWorkspace(input: UpdateWorkspaceInput!): Workspace!
+  
+  # Soft delete workspace (move to trash)
+  deleteWorkspace(input: DeleteWorkspaceInput!): Boolean!
+  
+  # Restore workspace from trash
+  restoreWorkspace(input: RestoreWorkspaceInput!): Workspace!
+  
+  # Permanent delete workspace and all related data
+  permanentDeleteWorkspace(id: ID!): Boolean!
+}
+
+# Subscriptions (simulated via polling)
+
+type Subscription {
+  # Subscribe to workspace list changes
+  workspacesChanged: [Workspace!]!
+  
+  # Subscribe to active workspace changes
+  activeWorkspaceChanged: Workspace
+}
+```
+
+---
+
+## Example Operations
+
+### Query: Get All Workspaces
+
+```graphql
+query GetWorkspaces {
+  getWorkspaces {
+    id
+    identity {
+      name
+      persona
+      systemPrompt
+    }
+    gatewayConnectionId
+    createdAt
+    isActive
+  }
+}
+```
+
+**Response**:
+```json
+{
+  "data": {
+    "getWorkspaces": [
+      {
+        "id": "ws-1",
+        "identity": {
+          "name": "Work",
+          "persona": "Professional coding assistant",
+          "systemPrompt": "You are a helpful assistant for software development."
+        },
+        "gatewayConnectionId": "gc-1",
+        "createdAt": "2026-02-18T10:00:00Z",
+        "isActive": true
+      },
+      {
+        "id": "ws-2",
+        "identity": {
+          "name": "Personal",
+          "persona": "Friendly general assistant",
+          "systemPrompt": null
+        },
+        "gatewayConnectionId": "gc-1",
+        "createdAt": "2026-02-18T11:00:00Z",
+        "isActive": true
+      }
+    ]
+  }
+}
+```
+
+---
+
+### Mutation: Create Workspace
+
+```graphql
+mutation CreateWorkspace($input: CreateWorkspaceInput!) {
+  createWorkspace(input: $input) {
+    id
+    identity {
+      name
+      persona
+    }
+    createdAt
+  }
+}
+```
+
+**Variables**:
+```json
+{
+  "input": {
+    "name": "Creative Writing",
+    "persona": "Creative writing coach",
+    "systemPrompt": "You are a helpful assistant for creative writing and storytelling.",
+    "gatewayConnectionId": "gc-1"
+  }
+}
+```
+
+**Response**:
+```json
+{
+  "data": {
+    "createWorkspace": {
+      "id": "ws-3",
+      "identity": {
+        "name": "Creative Writing",
+        "persona": "Creative writing coach"
+      },
+      "createdAt": "2026-02-18T12:00:00Z"
+    }
+  }
+}
+```
+
+---
+
+### Mutation: Delete Workspace (Soft Delete)
+
+```graphql
+mutation DeleteWorkspace($input: DeleteWorkspaceInput!) {
+  deleteWorkspace(input: $input)
+}
+```
+
+**Variables**:
+```json
+{
+  "input": {
+    "id": "ws-3"
+  }
+}
+```
+
+**Response**:
+```json
+{
+  "data": {
+    "deleteWorkspace": true
+  }
+}
+```
+
+---
+
+### Mutation: Restore Workspace
+
+```graphql
+mutation RestoreWorkspace($input: RestoreWorkspaceInput!) {
+  restoreWorkspace(input: $input) {
+    id
+    identity {
+      name
+    }
+    deletedAt
+    isActive
+  }
+}
+```
+
+**Variables**:
+```json
+{
+  "input": {
+    "id": "ws-3"
+  }
+}
+```
+
+**Response**:
+```json
+{
+  "data": {
+    "restoreWorkspace": {
+      "id": "ws-3",
+      "identity": {
+        "name": "Creative Writing"
+      },
+      "deletedAt": null,
+      "isActive": true
+    }
+  }
+}
+```
+
+---
+
+### Query: Get Trash Workspaces
+
+```graphql
+query GetTrashWorkspaces {
+  getTrashWorkspaces {
+    id
+    identity {
+      name
+    }
+    deletedAt
+    daysInTrash
+  }
+}
+```
+
+**Response**:
+```json
+{
+  "data": {
+    "getTrashWorkspaces": [
+      {
+        "id": "ws-4",
+        "identity": {
+          "name": "Old Project"
+        },
+        "deletedAt": "2026-02-10T08:00:00Z",
+        "daysInTrash": 8
+      }
+    ]
+  }
+}
+```
+
+---
+
+## Client-Side Implementation Pattern
+
+### GraphQL-to-REST Adapter
+
+```dart
+// lib/src/data/datasources/remote/graphql_to_rest_adapter.dart
+class GraphqlToRestAdapter {
+  final ZeroClawRestApi _restApi;
+  
+  GraphqlToRestAdapter(this._restApi);
+  
+  // Query: GetWorkspaces
+  Future<List<Workspace>> getWorkspaces() async {
+    final response = await _restApi.get('/workspaces');
+    return (response as List).map((w) => Workspace.fromJson(w)).toList();
+  }
+  
+  // Mutation: CreateWorkspace
+  Future<Workspace> createWorkspace(CreateWorkspaceInput input) async {
+    final response = await _restApi.post(
+      '/workspaces',
+      body: input.toJson(),
+    );
+    return Workspace.fromJson(response);
+  }
+  
+  // Mutation: DeleteWorkspace
+  Future<bool> deleteWorkspace(String id) async {
+    final response = await _restApi.patch(
+      '/workspaces/$id',
+      body: {'deletedAt': DateTime.now().toIso8601String()},
+    );
+    return response['success'] as bool;
+  }
+  
+  // Subscription: WorkspacesChanged (simulated via polling)
+  Stream<List<Workspace>> workspacesChangedStream() {
+    return Stream.periodic(
+      const Duration(seconds: 2),
+      (_) => getWorkspaces(),
+    ).asyncMap((future) => future);
+  }
+}
+```
+
+---
+
+## Error Handling
+
+### Standard Error Response
+
+```json
+{
+  "errors": [
+    {
+      "message": "Workspace not found",
+      "locations": [{"line": 2, "column": 3}],
+      "path": ["deleteWorkspace"],
+      "extensions": {
+        "code": "NOT_FOUND",
+        "workspaceId": "ws-999"
+      }
+    }
+  ]
+}
+```
+
+### Error Codes
+
+| Code | HTTP Status | Description |
+|------|-------------|-------------|
+| `NOT_FOUND` | 404 | Workspace ID doesn't exist |
+| `ALREADY_DELETED` | 400 | Workspace already in trash |
+| `NOT_DELETED` | 400 | Workspace not in trash (for restore) |
+| `EXPIRED` | 410 | Workspace already purged (>30 days) |
+| `INVALID_INPUT` | 400 | Validation error in input |
+
+---
+
+## References
+
+- US1 Contracts: `/specs/002-us1-connect-chat/contracts/`
+- Data Model: `/specs/003-us2-multi-agent-workspace/data-model.md`
+- Quickstart: `/specs/003-us2-multi-agent-workspace/quickstart.md`

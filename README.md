@@ -2,9 +2,14 @@
 
 [![WIP](https://img.shields.io/badge/status-WIP-orange.svg)](https://github.com/leblebi-ai/leblebi)
 
-**Leblebi** is a Flutter-based client application for **ZeroClaw**, designed to provide a seamless chat interface and gateway connection management.
+**Leblebi** is a high-performance, native Flutter-based client for **ZeroClaw**, designed to be the definitive **Multi-Agent Orchestration Platform**.
 
-> **Note:** This project is currently a **Work In Progress (WIP)**. Features are actively being developed and improved.
+Unlike Electron-based alternatives (e.g., Eigent), Leblebi focuses on:
+*   **🚀 Native Performance**: Built with Flutter/Dart for blazing fast UI, minimal memory footprint, and instant startup.
+*   **🔋 Efficiency**: Optimized for battery life and system resources, leaving more power for your local LLMs.
+*   **🛠️ Professional Tooling**: A clean, type-safe architecture for managing complex agent workflows and tools.
+
+> **Note:** This project is currently a **Work In Progress (WIP)**. Features are actively being developed to surpass existing open-source agent desktops.
 
 ## 🎥 Demo
 

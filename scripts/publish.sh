@@ -47,6 +47,53 @@ else
     echo "  ✓ Tagged v$VERSION"
 fi
 
+echo "🚀 Building macOS release locally..."
+if flutter build macos --release; then
+    echo "📦 Creating DMG..."
+    cd build/macos/Build/Products/Release
+    # Create a temporary staging directory
+    rm -rf dmg_staging
+    mkdir -p dmg_staging
+    cp -r leblebi.app dmg_staging/
+    ln -s /Applications dmg_staging/Applications
+
+    # Create DMG using hdiutil
+    hdiutil create -volname "Leblebi" -srcfolder dmg_staging -ov -format UDZO leblebi-macos.dmg
+
+    # Clean up staging
+    rm -rf dmg_staging
+    cd -
+    
+else
+    echo "  ⚠️ macOS build failed. Skipping DMG upload."
+fi
+
+echo "🚀 Building Android release locally..."
+if flutter build apk --release; then
+    echo "  ✓ Android APK built successfully"
+    cp build/app/outputs/flutter-apk/app-release.apk build/leblebi-android.apk
+else
+    echo "  ⚠️ Android build failed or environment not ready. Skipping APK upload."
+fi
+
+echo "⬆️ Uploading to GitHub Release..."
+FILES=()
+if [ -f "build/macos/Build/Products/Release/leblebi-macos.dmg" ]; then
+    FILES+=("build/macos/Build/Products/Release/leblebi-macos.dmg")
+fi
+if [ -f "build/leblebi-android.apk" ]; then
+    FILES+=("build/leblebi-android.apk")
+fi
+
+# Check if release exists
+if gh release view "v$VERSION" >/dev/null 2>&1; then
+    echo "  ℹ️ Release v$VERSION already exists. Uploading assets..."
+    gh release upload "v$VERSION" "${FILES[@]}" --clobber
+else
+    echo "  🚀 Creating new release v$VERSION..."
+    gh release create "v$VERSION" "${FILES[@]}" --generate-notes
+fi
+
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 echo "✅ Done! Push changes with:"
 echo "git push origin $CURRENT_BRANCH && git push origin v$VERSION"
