@@ -132,8 +132,8 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build macOS App
-        run: flutter build macos --release
+      - name: Build macOS App (No Code Signing)
+        run: flutter build macos --release --no-codesign
 
       - name: Create DMG
         run: |
