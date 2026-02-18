@@ -27,7 +27,7 @@ class _SetupView extends StatefulWidget {
 
 class _SetupViewState extends State<_SetupView> {
   final _formKey = GlobalKey<FormState>();
-  final _urlController = TextEditingController(text: 'http://127.0.0.1:57152');
+  final _urlController = TextEditingController(text: 'http://127.0.0.1:8080');
   final _codeController = TextEditingController();
 
   @override

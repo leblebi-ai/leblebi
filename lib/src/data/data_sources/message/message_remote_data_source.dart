@@ -22,9 +22,6 @@ class MessageRemoteDataSource with Loggable, FailureHandler {
       message.content,
     );
     
-    // Debugging
-    print('ZeroClaw Response: $response');
-
     // The ZeroClaw API might return different fields. 
     // Usually it returns { "content": "..." } or { "message": "..." }
     // Let's try to extract from common fields.
