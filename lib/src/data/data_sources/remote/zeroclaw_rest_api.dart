@@ -230,7 +230,9 @@ class ZeroClawRestApi {
       print(
         'ZeroClaw API Error (permanentDeleteWorkspace): ${response.statusCode} ${response.body}',
       );
-      throw Exception('Failed to permanently delete workspace: ${response.body}');
+      throw Exception(
+        'Failed to permanently delete workspace: ${response.body}',
+      );
     }
   }
 
@@ -291,7 +293,9 @@ class ZeroClawRestApi {
     String conversationId,
   ) async {
     final response = await _client.get(
-      Uri.parse('$baseUrl/workspaces/$workspaceId/conversations/$conversationId'),
+      Uri.parse(
+        '$baseUrl/workspaces/$workspaceId/conversations/$conversationId',
+      ),
       headers: {'Authorization': 'Bearer $token'},
     );
 

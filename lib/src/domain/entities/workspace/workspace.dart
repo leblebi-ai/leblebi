@@ -15,4 +15,5 @@ abstract class $Workspace {
   DateTime get createdAt;
   DateTime? get updatedAt;
   DateTime? get deletedAt;
+  String get id;
 }

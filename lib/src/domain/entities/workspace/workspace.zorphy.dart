@@ -15,6 +15,7 @@ class Workspace {
   final DateTime createdAt;
   final DateTime? updatedAt;
   final DateTime? deletedAt;
+  final String id;
 
   Workspace({
     required this.identity,
@@ -22,6 +23,7 @@ class Workspace {
     required this.createdAt,
     this.updatedAt,
     this.deletedAt,
+    required this.id,
   });
 
   Workspace copyWith({
@@ -30,6 +32,7 @@ class Workspace {
     DateTime? createdAt,
     DateTime? updatedAt,
     DateTime? deletedAt,
+    String? id,
   }) {
     return Workspace(
       identity: identity ?? this.identity,
@@ -37,6 +40,7 @@ class Workspace {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
+      id: id ?? this.id,
     );
   }
 
@@ -46,6 +50,7 @@ class Workspace {
     DateTime? createdAt,
     DateTime? updatedAt,
     DateTime? deletedAt,
+    String? id,
   }) {
     return copyWith(
       identity: identity,
@@ -53,6 +58,7 @@ class Workspace {
       createdAt: createdAt,
       updatedAt: updatedAt,
       deletedAt: deletedAt,
+      id: id,
     );
   }
 
@@ -87,6 +93,11 @@ class Workspace {
                 ? _patchMap[Workspace$.deletedAt](this.deletedAt)
                 : _patchMap[Workspace$.deletedAt]
           : this.deletedAt,
+      id: _patchMap.containsKey(Workspace$.id)
+          ? (_patchMap[Workspace$.id] is Function)
+                ? _patchMap[Workspace$.id](this.id)
+                : _patchMap[Workspace$.id]
+          : this.id,
     );
   }
 
@@ -98,7 +109,8 @@ class Workspace {
         gatewayConnectionId == other.gatewayConnectionId &&
         createdAt == other.createdAt &&
         updatedAt == other.updatedAt &&
-        deletedAt == other.deletedAt;
+        deletedAt == other.deletedAt &&
+        id == other.id;
   }
 
   @override
@@ -109,6 +121,7 @@ class Workspace {
       this.createdAt,
       this.updatedAt,
       this.deletedAt,
+      this.id,
     );
   }
 
@@ -123,7 +136,9 @@ class Workspace {
         ', ' +
         'updatedAt: ${updatedAt}' +
         ', ' +
-        'deletedAt: ${deletedAt})';
+        'deletedAt: ${deletedAt}' +
+        ', ' +
+        'id: ${id})';
   }
 
   /// Creates a [Workspace] instance from JSON
@@ -185,6 +200,7 @@ enum Workspace$ {
   createdAt,
   updatedAt,
   deletedAt,
+  id,
 }
 
 class WorkspacePatch implements Patch<Workspace> {
@@ -277,6 +293,11 @@ class WorkspacePatch implements Patch<Workspace> {
     _patch[Workspace$.deletedAt] = value;
     return this;
   }
+
+  WorkspacePatch withId(String? value) {
+    _patch[Workspace$.id] = value;
+    return this;
+  }
 }
 
 /// Field descriptors for [Workspace] query construction
@@ -306,6 +327,8 @@ abstract final class WorkspaceFields {
     'deletedAt',
     _$getdeletedAt,
   );
+  static String _$getid(Workspace e) => e.id;
+  static const id = Field<Workspace, String>('id', _$getid);
 }
 
 extension WorkspaceCompareE on Workspace {
@@ -326,6 +349,9 @@ extension WorkspaceCompareE on Workspace {
     }
     if (deletedAt != other.deletedAt) {
       diff['deletedAt'] = () => other.deletedAt;
+    }
+    if (id != other.id) {
+      diff['id'] = () => other.id;
     }
     return diff;
   }

@@ -22,9 +22,9 @@ class WorkspaceRemoteDataSource implements WorkspaceDataSource {
     required ZeroClawRestApi api,
     required String baseUrl,
     required String token,
-  })  : _api = api,
-        _baseUrl = baseUrl,
-        _token = token;
+  }) : _api = api,
+       _baseUrl = baseUrl,
+       _token = token;
 
   final ZeroClawRestApi _api;
   final String _baseUrl;
@@ -32,7 +32,7 @@ class WorkspaceRemoteDataSource implements WorkspaceDataSource {
 
   @override
   Future<Workspace> get(QueryParams<Workspace> params) async {
-    final workspaceId = params.id;
+    final workspaceId = params.params?['id'] as String;
     final data = await _api.getWorkspace(_baseUrl, _token, workspaceId);
     return _mapToWorkspace(data);
   }

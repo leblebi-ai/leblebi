@@ -12,19 +12,19 @@ abstract class WorkspaceRepository {
   Future<void> delete(DeleteParams<String> params);
 
   /// Restore workspace from trash
-  /// 
+  ///
   /// Clears the deletedAt timestamp, making the workspace active again.
   /// Returns the restored workspace.
   Future<Workspace> restore(DeleteParams<String> params);
 
   /// Permanently delete workspace and all related data
-  /// 
+  ///
   /// This operation is irreversible. Deletes the workspace, all conversations
   /// within the workspace, and all messages in those conversations.
   Future<void> permanentDelete(DeleteParams<String> params);
 
   /// Purge expired trash (workspaces deleted > 30 days ago)
-  /// 
+  ///
   /// Returns the number of workspaces purged.
   Future<int> purgeExpiredTrash();
 }

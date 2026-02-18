@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../di/service_locator.dart';
 import '../../domain/usecases/connect_gateway_usecase.dart';
 import 'setup_view_model.dart';
-import '../chat/chat_page.dart';
+import '../workspace/workspace_list_view.dart';
 
 class SetupPage extends StatelessWidget {
   const SetupPage({super.key});
@@ -48,7 +48,7 @@ class _SetupViewState extends State<_SetupView> {
       if (success && mounted) {
         Navigator.of(
           context,
-        ).pushReplacement(MaterialPageRoute(builder: (_) => const ChatPage()));
+        ).pushReplacement(MaterialPageRoute(builder: (_) => const WorkspaceListView()));
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

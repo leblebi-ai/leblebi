@@ -18,6 +18,7 @@ Workspace _$WorkspaceFromJson(Map<String, dynamic> json) => Workspace(
   deletedAt: json['deletedAt'] == null
       ? null
       : DateTime.parse(json['deletedAt'] as String),
+  id: json['id'] as String,
 );
 
 Map<String, dynamic> _$WorkspaceToJson(Workspace instance) => <String, dynamic>{
@@ -26,4 +27,5 @@ Map<String, dynamic> _$WorkspaceToJson(Workspace instance) => <String, dynamic>{
   'createdAt': instance.createdAt.toIso8601String(),
   'updatedAt': instance.updatedAt?.toIso8601String(),
   'deletedAt': instance.deletedAt?.toIso8601String(),
+  'id': instance.id,
 };
