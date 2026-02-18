@@ -14,4 +14,5 @@ abstract class GatewayConnectionRepository {
     UpdateParams<String, Partial<GatewayConnection>> params,
   );
   Future<void> delete(DeleteParams<String> params);
+  Future<GatewayConnection> pair(String url, String pairingCode);
 }

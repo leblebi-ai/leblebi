@@ -14,28 +14,22 @@ class Message {
   final String conversationId;
   final MessageSender sender;
   final String content;
+  final MessageStatus status;
   final DateTime timestamp;
-  final MessageStatus? status;
-  final List<ToolCall>? toolCalls;
-  final List<Attachment>? attachments;
+  final int? retryCount;
+  final String? errorMessage;
   final MessageMetadata? metadata;
-  final String? replyToMessageId;
-  final bool isEdited;
-  final DateTime? editedAt;
 
   Message({
     required this.id,
     required this.conversationId,
     required this.sender,
     required this.content,
+    required this.status,
     required this.timestamp,
-    this.status,
-    this.toolCalls,
-    this.attachments,
+    this.retryCount,
+    this.errorMessage,
     this.metadata,
-    this.replyToMessageId,
-    required this.isEdited,
-    this.editedAt,
   });
 
   Message copyWith({
@@ -43,28 +37,22 @@ class Message {
     String? conversationId,
     MessageSender? sender,
     String? content,
-    DateTime? timestamp,
     MessageStatus? status,
-    List<ToolCall>? toolCalls,
-    List<Attachment>? attachments,
+    DateTime? timestamp,
+    int? retryCount,
+    String? errorMessage,
     MessageMetadata? metadata,
-    String? replyToMessageId,
-    bool? isEdited,
-    DateTime? editedAt,
   }) {
     return Message(
       id: id ?? this.id,
       conversationId: conversationId ?? this.conversationId,
       sender: sender ?? this.sender,
       content: content ?? this.content,
-      timestamp: timestamp ?? this.timestamp,
       status: status ?? this.status,
-      toolCalls: toolCalls ?? this.toolCalls,
-      attachments: attachments ?? this.attachments,
+      timestamp: timestamp ?? this.timestamp,
+      retryCount: retryCount ?? this.retryCount,
+      errorMessage: errorMessage ?? this.errorMessage,
       metadata: metadata ?? this.metadata,
-      replyToMessageId: replyToMessageId ?? this.replyToMessageId,
-      isEdited: isEdited ?? this.isEdited,
-      editedAt: editedAt ?? this.editedAt,
     );
   }
 
@@ -73,28 +61,22 @@ class Message {
     String? conversationId,
     MessageSender? sender,
     String? content,
-    DateTime? timestamp,
     MessageStatus? status,
-    List<ToolCall>? toolCalls,
-    List<Attachment>? attachments,
+    DateTime? timestamp,
+    int? retryCount,
+    String? errorMessage,
     MessageMetadata? metadata,
-    String? replyToMessageId,
-    bool? isEdited,
-    DateTime? editedAt,
   }) {
     return copyWith(
       id: id,
       conversationId: conversationId,
       sender: sender,
       content: content,
-      timestamp: timestamp,
       status: status,
-      toolCalls: toolCalls,
-      attachments: attachments,
+      timestamp: timestamp,
+      retryCount: retryCount,
+      errorMessage: errorMessage,
       metadata: metadata,
-      replyToMessageId: replyToMessageId,
-      isEdited: isEdited,
-      editedAt: editedAt,
     );
   }
 
@@ -122,46 +104,31 @@ class Message {
                 ? _patchMap[Message$.content](this.content)
                 : _patchMap[Message$.content]
           : this.content,
-      timestamp: _patchMap.containsKey(Message$.timestamp)
-          ? (_patchMap[Message$.timestamp] is Function)
-                ? _patchMap[Message$.timestamp](this.timestamp)
-                : _patchMap[Message$.timestamp]
-          : this.timestamp,
       status: _patchMap.containsKey(Message$.status)
           ? (_patchMap[Message$.status] is Function)
                 ? _patchMap[Message$.status](this.status)
                 : _patchMap[Message$.status]
           : this.status,
-      toolCalls: _patchMap.containsKey(Message$.toolCalls)
-          ? (_patchMap[Message$.toolCalls] is Function)
-                ? _patchMap[Message$.toolCalls](this.toolCalls)
-                : _patchMap[Message$.toolCalls]
-          : this.toolCalls,
-      attachments: _patchMap.containsKey(Message$.attachments)
-          ? (_patchMap[Message$.attachments] is Function)
-                ? _patchMap[Message$.attachments](this.attachments)
-                : _patchMap[Message$.attachments]
-          : this.attachments,
+      timestamp: _patchMap.containsKey(Message$.timestamp)
+          ? (_patchMap[Message$.timestamp] is Function)
+                ? _patchMap[Message$.timestamp](this.timestamp)
+                : _patchMap[Message$.timestamp]
+          : this.timestamp,
+      retryCount: _patchMap.containsKey(Message$.retryCount)
+          ? (_patchMap[Message$.retryCount] is Function)
+                ? _patchMap[Message$.retryCount](this.retryCount)
+                : _patchMap[Message$.retryCount]
+          : this.retryCount,
+      errorMessage: _patchMap.containsKey(Message$.errorMessage)
+          ? (_patchMap[Message$.errorMessage] is Function)
+                ? _patchMap[Message$.errorMessage](this.errorMessage)
+                : _patchMap[Message$.errorMessage]
+          : this.errorMessage,
       metadata: _patchMap.containsKey(Message$.metadata)
           ? (_patchMap[Message$.metadata] is Function)
                 ? _patchMap[Message$.metadata](this.metadata)
                 : _patchMap[Message$.metadata]
           : this.metadata,
-      replyToMessageId: _patchMap.containsKey(Message$.replyToMessageId)
-          ? (_patchMap[Message$.replyToMessageId] is Function)
-                ? _patchMap[Message$.replyToMessageId](this.replyToMessageId)
-                : _patchMap[Message$.replyToMessageId]
-          : this.replyToMessageId,
-      isEdited: _patchMap.containsKey(Message$.isEdited)
-          ? (_patchMap[Message$.isEdited] is Function)
-                ? _patchMap[Message$.isEdited](this.isEdited)
-                : _patchMap[Message$.isEdited]
-          : this.isEdited,
-      editedAt: _patchMap.containsKey(Message$.editedAt)
-          ? (_patchMap[Message$.editedAt] is Function)
-                ? _patchMap[Message$.editedAt](this.editedAt)
-                : _patchMap[Message$.editedAt]
-          : this.editedAt,
     );
   }
 
@@ -173,14 +140,11 @@ class Message {
         conversationId == other.conversationId &&
         sender == other.sender &&
         content == other.content &&
-        timestamp == other.timestamp &&
         status == other.status &&
-        toolCalls == other.toolCalls &&
-        attachments == other.attachments &&
-        metadata == other.metadata &&
-        replyToMessageId == other.replyToMessageId &&
-        isEdited == other.isEdited &&
-        editedAt == other.editedAt;
+        timestamp == other.timestamp &&
+        retryCount == other.retryCount &&
+        errorMessage == other.errorMessage &&
+        metadata == other.metadata;
   }
 
   @override
@@ -190,14 +154,11 @@ class Message {
       this.conversationId,
       this.sender,
       this.content,
-      this.timestamp,
       this.status,
-      this.toolCalls,
-      this.attachments,
+      this.timestamp,
+      this.retryCount,
+      this.errorMessage,
       this.metadata,
-      this.replyToMessageId,
-      this.isEdited,
-      this.editedAt,
     );
   }
 
@@ -212,21 +173,15 @@ class Message {
         ', ' +
         'content: ${content}' +
         ', ' +
-        'timestamp: ${timestamp}' +
-        ', ' +
         'status: ${status}' +
         ', ' +
-        'toolCalls: ${toolCalls}' +
+        'timestamp: ${timestamp}' +
         ', ' +
-        'attachments: ${attachments}' +
+        'retryCount: ${retryCount}' +
         ', ' +
-        'metadata: ${metadata}' +
+        'errorMessage: ${errorMessage}' +
         ', ' +
-        'replyToMessageId: ${replyToMessageId}' +
-        ', ' +
-        'isEdited: ${isEdited}' +
-        ', ' +
-        'editedAt: ${editedAt})';
+        'metadata: ${metadata})';
   }
 
   /// Creates a [Message] instance from JSON
@@ -252,38 +207,26 @@ class Message {
 }
 
 extension MessagePropertyHelpers on Message {
-  bool get isSenderUSER => sender == MessageSender.USER;
-  bool get isSenderAI => sender == MessageSender.AI;
-  bool get isSenderSYSTEM => sender == MessageSender.SYSTEM;
-  bool get hasStatus => status != null;
-  bool get noStatus => status == null;
-  MessageStatus get statusRequired =>
-      status ?? (throw StateError('status is required but was null'));
-  bool get isStatusPENDING => status == MessageStatus.PENDING;
-  bool get isStatusSENT => status == MessageStatus.SENT;
-  bool get isStatusDELIVERED => status == MessageStatus.DELIVERED;
-  bool get isStatusFAILED => status == MessageStatus.FAILED;
-  List<ToolCall> get toolCallsRequired =>
-      toolCalls ?? (throw StateError('toolCalls is required but was null'));
-  bool get hasToolCalls => toolCalls?.isNotEmpty ?? false;
-  bool get noToolCalls => toolCalls?.isEmpty ?? true;
-  List<Attachment> get attachmentsRequired =>
-      attachments ?? (throw StateError('attachments is required but was null'));
-  bool get hasAttachments => attachments?.isNotEmpty ?? false;
-  bool get noAttachments => attachments?.isEmpty ?? true;
+  bool get isSenderUser => sender == MessageSender.user;
+  bool get isSenderAi => sender == MessageSender.ai;
+  bool get isSenderSystem => sender == MessageSender.system;
+  bool get isStatusPending => status == MessageStatus.pending;
+  bool get isStatusSent => status == MessageStatus.sent;
+  bool get isStatusDelivered => status == MessageStatus.delivered;
+  bool get isStatusFailed => status == MessageStatus.failed;
+  bool get hasRetryCount => retryCount != null;
+  bool get noRetryCount => retryCount == null;
+  int get retryCountRequired =>
+      retryCount ?? (throw StateError('retryCount is required but was null'));
+  bool get hasErrorMessage => errorMessage != null;
+  bool get noErrorMessage => errorMessage == null;
+  String get errorMessageRequired =>
+      errorMessage ??
+      (throw StateError('errorMessage is required but was null'));
   bool get hasMetadata => metadata != null;
   bool get noMetadata => metadata == null;
   MessageMetadata get metadataRequired =>
       metadata ?? (throw StateError('metadata is required but was null'));
-  bool get hasReplyToMessageId => replyToMessageId != null;
-  bool get noReplyToMessageId => replyToMessageId == null;
-  String get replyToMessageIdRequired =>
-      replyToMessageId ??
-      (throw StateError('replyToMessageId is required but was null'));
-  bool get hasEditedAt => editedAt != null;
-  bool get noEditedAt => editedAt == null;
-  DateTime get editedAtRequired =>
-      editedAt ?? (throw StateError('editedAt is required but was null'));
 }
 
 extension MessageSerialization on Message {
@@ -311,14 +254,11 @@ enum Message$ {
   conversationId,
   sender,
   content,
-  timestamp,
   status,
-  toolCalls,
-  attachments,
+  timestamp,
+  retryCount,
+  errorMessage,
   metadata,
-  replyToMessageId,
-  isEdited,
-  editedAt,
 }
 
 class MessagePatch implements Patch<Message> {
@@ -407,57 +347,28 @@ class MessagePatch implements Patch<Message> {
     return this;
   }
 
-  MessagePatch withTimestamp(DateTime? value) {
-    _patch[Message$.timestamp] = value;
-    return this;
-  }
-
   MessagePatch withStatus(MessageStatus? value) {
     _patch[Message$.status] = value;
     return this;
   }
 
-  MessagePatch withToolCalls(List<ToolCall>? value) {
-    _patch[Message$.toolCalls] = value;
+  MessagePatch withTimestamp(DateTime? value) {
+    _patch[Message$.timestamp] = value;
     return this;
   }
 
-  MessagePatch withAttachments(List<Attachment>? value) {
-    _patch[Message$.attachments] = value;
+  MessagePatch withRetryCount(int? value) {
+    _patch[Message$.retryCount] = value;
     return this;
   }
 
-  MessagePatch updateAttachmentsAt(
-    int index,
-    AttachmentPatch Function(AttachmentPatch) patch,
-  ) {
-    _patch[Message$.attachments] = (List<dynamic> list) {
-      var updatedList = List.from(list);
-      if (index >= 0 && index < updatedList.length) {
-        updatedList[index] = patch(updatedList[index] as AttachmentPatch);
-      }
-      return updatedList;
-    };
+  MessagePatch withErrorMessage(String? value) {
+    _patch[Message$.errorMessage] = value;
     return this;
   }
 
   MessagePatch withMetadata(MessageMetadata? value) {
     _patch[Message$.metadata] = value;
-    return this;
-  }
-
-  MessagePatch withReplyToMessageId(String? value) {
-    _patch[Message$.replyToMessageId] = value;
-    return this;
-  }
-
-  MessagePatch withIsEdited(bool? value) {
-    _patch[Message$.isEdited] = value;
-    return this;
-  }
-
-  MessagePatch withEditedAt(DateTime? value) {
-    _patch[Message$.editedAt] = value;
     return this;
   }
 }
@@ -475,37 +386,25 @@ abstract final class MessageFields {
   static const sender = Field<Message, MessageSender>('sender', _$getsender);
   static String _$getcontent(Message e) => e.content;
   static const content = Field<Message, String>('content', _$getcontent);
+  static MessageStatus _$getstatus(Message e) => e.status;
+  static const status = Field<Message, MessageStatus>('status', _$getstatus);
   static DateTime _$gettimestamp(Message e) => e.timestamp;
   static const timestamp = Field<Message, DateTime>(
     'timestamp',
     _$gettimestamp,
   );
-  static MessageStatus? _$getstatus(Message e) => e.status;
-  static const status = Field<Message, MessageStatus?>('status', _$getstatus);
-  static List<ToolCall>? _$gettoolCalls(Message e) => e.toolCalls;
-  static const toolCalls = Field<Message, List<ToolCall>?>(
-    'toolCalls',
-    _$gettoolCalls,
-  );
-  static List<Attachment>? _$getattachments(Message e) => e.attachments;
-  static const attachments = Field<Message, List<Attachment>?>(
-    'attachments',
-    _$getattachments,
+  static int? _$getretryCount(Message e) => e.retryCount;
+  static const retryCount = Field<Message, int?>('retryCount', _$getretryCount);
+  static String? _$geterrorMessage(Message e) => e.errorMessage;
+  static const errorMessage = Field<Message, String?>(
+    'errorMessage',
+    _$geterrorMessage,
   );
   static MessageMetadata? _$getmetadata(Message e) => e.metadata;
   static const metadata = Field<Message, MessageMetadata?>(
     'metadata',
     _$getmetadata,
   );
-  static String? _$getreplyToMessageId(Message e) => e.replyToMessageId;
-  static const replyToMessageId = Field<Message, String?>(
-    'replyToMessageId',
-    _$getreplyToMessageId,
-  );
-  static bool _$getisEdited(Message e) => e.isEdited;
-  static const isEdited = Field<Message, bool>('isEdited', _$getisEdited);
-  static DateTime? _$geteditedAt(Message e) => e.editedAt;
-  static const editedAt = Field<Message, DateTime?>('editedAt', _$geteditedAt);
 }
 
 extension MessageCompareE on Message {
@@ -524,29 +423,20 @@ extension MessageCompareE on Message {
     if (content != other.content) {
       diff['content'] = () => other.content;
     }
-    if (timestamp != other.timestamp) {
-      diff['timestamp'] = () => other.timestamp;
-    }
     if (status != other.status) {
       diff['status'] = () => other.status;
     }
-    if (toolCalls != other.toolCalls) {
-      diff['toolCalls'] = () => other.toolCalls;
+    if (timestamp != other.timestamp) {
+      diff['timestamp'] = () => other.timestamp;
     }
-    if (attachments != other.attachments) {
-      diff['attachments'] = () => other.attachments;
+    if (retryCount != other.retryCount) {
+      diff['retryCount'] = () => other.retryCount;
+    }
+    if (errorMessage != other.errorMessage) {
+      diff['errorMessage'] = () => other.errorMessage;
     }
     if (metadata != other.metadata) {
       diff['metadata'] = () => other.metadata;
-    }
-    if (replyToMessageId != other.replyToMessageId) {
-      diff['replyToMessageId'] = () => other.replyToMessageId;
-    }
-    if (isEdited != other.isEdited) {
-      diff['isEdited'] = () => other.isEdited;
-    }
-    if (editedAt != other.editedAt) {
-      diff['editedAt'] = () => other.editedAt;
     }
     return diff;
   }

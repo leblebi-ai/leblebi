@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'workspace_repository_di.dart';
 import 'conversation_repository_di.dart';
 import 'gateway_connection_repository_di.dart';
+import 'message_repository_di.dart';
 import 'tool_configuration_repository_di.dart';
 
 void registerAllRepositories(GetIt getIt) {
@@ -11,6 +12,9 @@ void registerAllRepositories(GetIt getIt) {
   registerConversationRepository(getIt);
 
   registerGatewayConnectionRepository(getIt);
+  
+  registerMessageRepository(getIt);
 
   registerToolConfigurationRepository(getIt);
 }
+

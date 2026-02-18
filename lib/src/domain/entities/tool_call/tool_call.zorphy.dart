@@ -164,10 +164,10 @@ class ToolCall {
 extension ToolCallPropertyHelpers on ToolCall {
   bool get hasArguments => arguments.isNotEmpty;
   bool get noArguments => arguments.isEmpty;
-  bool get isStatusPENDING => status == ToolCallStatus.PENDING;
-  bool get isStatusEXECUTING => status == ToolCallStatus.EXECUTING;
-  bool get isStatusSUCCESS => status == ToolCallStatus.SUCCESS;
-  bool get isStatusERROR => status == ToolCallStatus.ERROR;
+  bool get isStatusPending => status == ToolCallStatus.pending;
+  bool get isStatusExecuting => status == ToolCallStatus.executing;
+  bool get isStatusSuccess => status == ToolCallStatus.success;
+  bool get isStatusError => status == ToolCallStatus.error;
   bool get hasResult => result != null;
   bool get noResult => result == null;
   String get resultRequired =>

@@ -2,7 +2,10 @@ import 'package:get_it/get_it.dart';
 
 import 'workspace_remote_data_source_di.dart';
 import 'conversation_remote_data_source_di.dart';
+import 'gateway_connection_local_data_source_di.dart';
 import 'gateway_connection_remote_data_source_di.dart';
+import 'message_local_data_source_di.dart';
+import 'message_remote_data_source_di.dart';
 import 'tool_configuration_remote_data_source_di.dart';
 
 void registerAllDataSources(GetIt getIt) {
@@ -10,7 +13,13 @@ void registerAllDataSources(GetIt getIt) {
 
   registerConversationRemoteDataSource(getIt);
 
+  registerGatewayConnectionLocalDataSource(getIt);
   registerGatewayConnectionRemoteDataSource(getIt);
+
+  registerMessageLocalDataSource(getIt);
+  registerMessageRemoteDataSource(getIt);
 
   registerToolConfigurationRemoteDataSource(getIt);
 }
+
+

@@ -27,8 +27,8 @@ Map<String, dynamic> _$ToolCallToJson(ToolCall instance) => <String, dynamic>{
 };
 
 const _$ToolCallStatusEnumMap = {
-  ToolCallStatus.PENDING: 'PENDING',
-  ToolCallStatus.EXECUTING: 'EXECUTING',
-  ToolCallStatus.SUCCESS: 'SUCCESS',
-  ToolCallStatus.ERROR: 'ERROR',
+  ToolCallStatus.pending: 'pending',
+  ToolCallStatus.executing: 'executing',
+  ToolCallStatus.success: 'success',
+  ToolCallStatus.error: 'error',
 };

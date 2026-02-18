@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-macos:
+    name: Build macOS
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build macOS App
+        run: flutter build macos --release
+
+      - name: Zip App
+        run: |
+          cd build/macos/Build/Products/Release
+          zip -r leblebi-macos.zip leblebi.app
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/macos/Build/Products/Release/leblebi-macos.zip
+          generate_release_notes: true
