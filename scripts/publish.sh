@@ -33,11 +33,20 @@ echo "  ✓ pubspec.yaml updated to $VERSION+1"
 
 # Commit changes
 git add pubspec.yaml
-git commit -m "chore: bump version to $VERSION"
+if ! git diff --cached --quiet; then
+    git commit -m "chore: bump version to $VERSION"
+else
+    echo "  ℹ️ pubspec.yaml already has version $VERSION+1"
+fi
 
 # Tag
-git tag -a "v$VERSION" -m "Release v$VERSION"
-echo "  ✓ Tagged v$VERSION"
+if git rev-parse "v$VERSION" >/dev/null 2>&1; then
+    echo "  ⚠️ Tag v$VERSION already exists. Skipping tagging."
+else
+    git tag -a "v$VERSION" -m "Release v$VERSION"
+    echo "  ✓ Tagged v$VERSION"
+fi
 
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 echo "✅ Done! Push changes with:"
-echo "git push origin main && git push origin v$VERSION"
+echo "git push origin $CURRENT_BRANCH && git push origin v$VERSION"
